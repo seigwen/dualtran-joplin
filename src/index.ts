@@ -135,7 +135,8 @@ joplin.plugins.register({
     await joplin.settings.registerSettings({
       engine: {
         value: "google",
-        type: 4,
+        type: 2,
+        isEnum: true,
         section: SECTION,
         label: "Translation engine",
         description: "Google needs no key; AI uses an OpenAI-compatible endpoint.",
@@ -171,7 +172,7 @@ joplin.plugins.register({
       iconName: "fas fa-align-left",
       execute: translateSelection,
     });
-    await joplin.views.menuItems.create("dualtranMenuNote", "dualtranTranslateNote", 2);
-    await joplin.views.menuItems.create("dualtranMenuSel", "dualtranTranslateSelection", 2);
+    await joplin.views.menuItems.create("dualtranMenuNote", "dualtranTranslateNote", "tools");
+    await joplin.views.menuItems.create("dualtranMenuSel", "dualtranTranslateSelection", "tools");
   },
 });
