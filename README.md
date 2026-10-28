@@ -43,8 +43,10 @@ Then in Joplin: **Tools → Options → Plugins → Install from file** → pick
 ## Status
 
 - 16 unit tests (`npm test`), `tsc --noEmit` clean, `.jpl` builds (30 KB).
-- **Not yet verified inside the Joplin desktop app** — packaging is validated by the official
-  `joplin-plugin-cli`, but the commands have not been exercised against a live note.
+- **Verified end to end in Joplin 3.7.21 (Linux, headless):** the plugin loads
+  (`Finished running onStart handler … (Took 154ms)`), settings read back correctly, and running
+  `DualTran: translate note into a new note` on the English welcome note produced
+  `1. Welcome to Joplin! · zh-CN` with a real Chinese translation.
 
 ## Licence
 
