@@ -2,7 +2,7 @@
   "manifest_version": 1,
   "id": "com.seigwen.dualtran",
   "app_min_version": "2.13",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "name": "DualTran Translate",
   "description": "Translate a note and keep the source: the translation goes into a separate note. Google works without a key; any OpenAI-compatible endpoint works with your own key.",
   "author": "seigwen",
