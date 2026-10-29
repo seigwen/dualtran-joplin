@@ -1,5 +1,5 @@
 {
-  "name": "dualtran-joplin",
+  "name": "joplin-plugin-dualtran",
   "version": "0.1.2",
   "description": "DualTran for Joplin: translate a note into a separate note, keeping the source",
   "license": "MPL-2.0",
