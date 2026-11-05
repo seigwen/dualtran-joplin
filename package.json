@@ -23,5 +23,9 @@
     "joplin-plugin-cli": "0.1.2",
     "typescript": "^7.0.2",
     "vitest": "^5.0.5"
-  }
+  },
+  "files": [
+    "publish",
+    "README.md"
+  ]
 }
