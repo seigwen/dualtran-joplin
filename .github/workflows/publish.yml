@@ -1,0 +1,39 @@
+name: Publish to npm
+
+# npm is removing 2FA-bypass tokens as a way to publish (direct publishing goes away in
+# January 2027), so the release path is OIDC trusted publishing instead of a long-lived token.
+#
+# One-time setup on npmjs.com: package -> Settings -> Trusted publishing -> GitHub Actions,
+# repository `seigwen/dualtran-joplin`, workflow `publish.yml`, environment omitted.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      # Trusted publishing needs a recent npm; the one bundled with Node 22 is older.
+      - run: npm install -g npm@latest
+
+      - run: npm ci
+
+      - run: npm test
+
+      - run: npm run release
+
+      - name: Publish
+        run: npm publish --provenance --access public

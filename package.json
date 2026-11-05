@@ -7,7 +7,9 @@
   "scripts": {
     "build": "joplin-plugin-cli build",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "pack:publish": "node scripts/pack-publish.js",
+    "release": "npm run build && npm run pack:publish"
   },
   "keywords": [
     "joplin-plugin",
