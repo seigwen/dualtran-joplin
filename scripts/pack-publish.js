@@ -1,10 +1,13 @@
-// Build step for the npm package: copy the freshly built .jpl into publish/ under its add-on id,
-// which is the layout the Joplin plugin catalogue expects.
+// Build step for the npm package.
+//
+// Joplin's plugin-repo-cli installs the package, reads `publish/`, then takes the first .json as
+// the manifest and the first .jpl as the plugin. Both must sit in that directory, flat.
 const fs = require("node:fs");
 const path = require("node:path");
 
 const root = path.resolve(__dirname, "..");
-const manifest = JSON.parse(fs.readFileSync(path.join(root, "src", "manifest.json"), "utf8"));
+const sourceManifest = path.join(root, "src", "manifest.json");
+const manifest = JSON.parse(fs.readFileSync(sourceManifest, "utf8"));
 const built = path.join(root, "dualtran-joplin.jpl");
 
 if (!fs.existsSync(built)) {
@@ -12,7 +15,14 @@ if (!fs.existsSync(built)) {
   process.exit(1);
 }
 
-const target = path.join(root, "publish", `${manifest.id}.jpl`);
-fs.mkdirSync(path.dirname(target), { recursive: true });
-fs.copyFileSync(built, target);
-console.log(`packed ${path.relative(root, target)} (version ${manifest.version})`);
+const outDir = path.join(root, "publish");
+fs.mkdirSync(outDir, { recursive: true });
+
+// Clear stale artifacts so the directory always matches the version being published.
+for (const entry of fs.readdirSync(outDir)) {
+  if (entry !== ".gitkeep") fs.rmSync(path.join(outDir, entry), { recursive: true, force: true });
+}
+
+fs.copyFileSync(built, path.join(outDir, `${manifest.id}.jpl`));
+fs.copyFileSync(sourceManifest, path.join(outDir, "manifest.json"));
+console.log(`packed publish/ (version ${manifest.version}, id ${manifest.id})`);
