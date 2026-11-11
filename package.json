@@ -5,11 +5,14 @@
   "license": "MPL-2.0",
   "author": "seigwen",
   "scripts": {
-    "build": "joplin-plugin-cli build",
+    "build": "node scripts/build-panel.js && joplin-plugin-cli build && node scripts/build-assets.js",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
+    "conformance": "node scripts/conformance/run.mjs",
+    "i18n": "node scripts/i18n-translate.mjs",
     "pack:publish": "node scripts/pack-publish.js",
-    "release": "npm run build && npm run pack:publish"
+    "release": "npm run build && npm run pack:publish",
+    "verify": "npm run typecheck && npm test && npm run conformance && npm run build"
   },
   "keywords": [
     "joplin-plugin",

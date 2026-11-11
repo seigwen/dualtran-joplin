@@ -14,6 +14,8 @@ export interface AiConfig {
   apiKey: string;
   model: string;
   temperature?: number;
+  /** Panel setting: `lowest` (a request) or an explicit level. Resolved per model when sent. */
+  reasoning?: string;
 }
 
 export interface TranslateOptions {
@@ -56,7 +58,11 @@ export function buildChatRequest(config: AiConfig, options: TranslateOptions): {
   };
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (config.apiKey) headers.Authorization = `Bearer ${config.apiKey}`;
-  return { url, init: { method: "POST", headers, body: JSON.stringify(body) } };
+  const reasoning: Record<string, unknown> = {};
+  // `lowest` is resolved by the caller against the model's own scale; only a concrete level is
+  // sent. Unknown keys are ignored by providers that do not reason, which is the safe default.
+  if (config.reasoning && config.reasoning !== "lowest") reasoning.effort = config.reasoning;
+  return { url, init: { method: "POST", headers, body: JSON.stringify({ ...body, ...reasoning }) } };
 }
 
 export function parseChatResponse(payload: unknown): string {

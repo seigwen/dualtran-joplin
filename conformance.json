@@ -1,0 +1,16 @@
+{
+  "spec": "2.0.0",
+  "host": "dualtran-joplin",
+  "payload": "tests/conformance.test.ts",
+  "payloadCommand": "sh scripts/conformance/emit-payload.sh",
+  "static": {
+    "files": ["src/settingsPanel.ts", "src/index.ts"],
+    "patterns": [
+      "providerSeparator",
+      "__separator__",
+      "__more__",
+      "More (models.dev)"
+    ]
+  },
+  "platformLimits": []
+}
