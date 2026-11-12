@@ -47,11 +47,14 @@ same values; the panel adds the provider/model/reasoning pickers.
 
 ## Status
 
-- 16 unit tests (`npm test`), `tsc --noEmit` clean, `.jpl` builds (30 KB).
-- **Verified end to end in Joplin 3.7.21 (Linux, headless):** the plugin loads
-  (`Finished running onStart handler … (Took 154ms)`), settings read back correctly, and running
-  `DualTran: translate note into a new note` on the English welcome note produced
-  `1. Welcome to Joplin! · zh-CN` with a real Chinese translation.
+- 104 tests (`npm test`), `tsc --noEmit` clean, host conformance PASS, `.jpl` builds (260 KB with
+  the panel and 38 locales).
+- **Verified in Joplin 3.7.21 (Linux, headless):** v0.1.4 loads without errors, and
+  **Tools → Options → Plugins → DualTran** renders the settings page (engine, target, provider,
+  model, endpoint, API key, reasoning). `Tools → DualTran: open settings panel` opens the
+  dropdown panel.
+- v0.1.3 on the Joplin catalogue was unconfigurable: its settings were private (hidden from
+  Options) and its npm tarball packed a stale v0.1.2 archive with no panel. Fixed in v0.1.4.
 
 ## Licence
 
