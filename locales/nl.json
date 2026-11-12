@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: instellingenpaneel openen",
+  "commandTranslateNote": "DualTran: notitie naar een nieuwe notitie vertalen",
+  "commandTranslateSelection": "DualTran: selectie hieronder vertalen",
   "customModelLabel": "Aangepast model…",
   "customModelPlaceholder": "Model-id, bijv. gpt-4o-mini",
   "customProviderLabel": "Aangepast endpoint (andere provider)",
+  "providerPlaceholder": "Kies een provider",
+  "providerRequiredForModel": "Kies eerst een provider",
+  "providerRequiredError": "Kies een AI-provider in de instellingen voordat je vertaalt.",
   "engineAi": "AI (OpenAI-compatibel)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "Wordt alleen in dit Joplin-profiel opgeslagen.",

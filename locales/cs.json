@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: otevřít panel nastavení",
+  "commandTranslateNote": "DualTran: přeložit poznámku do nové poznámky",
+  "commandTranslateSelection": "DualTran: přeložit výběr níže",
   "customModelLabel": "Vlastní model…",
   "customModelPlaceholder": "ID modelu, např. gpt-4o-mini",
   "customProviderLabel": "Vlastní koncový bod (jiný poskytovatel)",
+  "providerPlaceholder": "Vyberte poskytovatele",
+  "providerRequiredForModel": "Nejprve vyberte poskytovatele",
+  "providerRequiredError": "Před překladem vyberte v nastavení poskytovatele AI.",
   "engineAi": "AI (kompatibilní s OpenAI)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "Ukládá se pouze v tomto profilu Joplin.",

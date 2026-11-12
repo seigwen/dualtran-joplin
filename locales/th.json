@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: เปิดแผงการตั้งค่า",
+  "commandTranslateNote": "DualTran: แปลโน้ตเป็นโน้ตใหม่",
+  "commandTranslateSelection": "DualTran: แปลข้อความที่เลือกด้านล่าง",
   "customModelLabel": "โมเดลแบบกำหนดเอง…",
   "customModelPlaceholder": "รหัสโมเดล เช่น gpt-4o-mini",
   "customProviderLabel": "เอนด์พอยต์แบบกำหนดเอง (ผู้ให้บริการอื่น)",
+  "providerPlaceholder": "เลือกผู้ให้บริการ",
+  "providerRequiredForModel": "เลือกผู้ให้บริการก่อน",
+  "providerRequiredError": "เลือกผู้ให้บริการ AI ในการตั้งค่าก่อนแปล",
   "engineAi": "AI (เข้ากันได้กับ OpenAI)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "จัดเก็บไว้ในโปรไฟล์ Joplin นี้เท่านั้น",

@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: beállítások panel megnyitása",
+  "commandTranslateNote": "DualTran: jegyzet fordítása új jegyzetbe",
+  "commandTranslateSelection": "DualTran: kijelölés fordítása alább",
   "customModelLabel": "Egyéni modell…",
   "customModelPlaceholder": "Modellazonosító, pl. gpt-4o-mini",
   "customProviderLabel": "Egyéni végpont (másik szolgáltató)",
+  "providerPlaceholder": "Válasszon szolgáltatót",
+  "providerRequiredForModel": "Először válasszon szolgáltatót",
+  "providerRequiredError": "Fordítás előtt válasszon AI-szolgáltatót a beállításokban.",
   "engineAi": "AI (OpenAI-kompatibilis)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "Csak ebben a Joplin-profilban tárolódik.",

@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: सेटिंग्स पैनल खोलें",
+  "commandTranslateNote": "DualTran: नोट को नए नोट में अनुवाद करें",
+  "commandTranslateSelection": "DualTran: चयन का नीचे अनुवाद करें",
   "customModelLabel": "कस्टम मॉडल…",
   "customModelPlaceholder": "मॉडल आईडी, जैसे gpt-4o-mini",
   "customProviderLabel": "कस्टम एंडपॉइंट (अन्य प्रदाता)",
+  "providerPlaceholder": "प्रदाता चुनें",
+  "providerRequiredForModel": "पहले प्रदाता चुनें",
+  "providerRequiredError": "अनुवाद करने से पहले सेटिंग्स में AI प्रदाता चुनें।",
   "engineAi": "AI (OpenAI-संगत)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "केवल इसी Joplin प्रोफ़ाइल में संग्रहीत।",

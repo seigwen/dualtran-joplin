@@ -60,6 +60,13 @@ export interface ModelOption {
  * produces a duplicate row; `local` has no catalogue entry at all and must survive a refresh.
  */
 export const BUILTINS: Record<string, { name: string; api: string; models: string[] }> = {
+  anthropic: {
+    // SPEC 2.1's conformance contract pins this base: it is the value the endpoint field must
+    // hold after Anthropic is chosen, and models.dev does not always publish it.
+    name: "Anthropic",
+    api: "https://api.anthropic.com/v1",
+    models: [],
+  },
   openai: {
     name: "OpenAI",
     api: "https://api.openai.com/v1",
@@ -260,12 +267,16 @@ export function modelsForProvider(catalog: Catalog, providerId: string): ModelOp
  * R3 — the endpoint follows the provider, unless the user typed their own.
  * `endpointCustom` is set by the panel the moment the field is edited, and is the whole
  * difference between "autofill" and "clobbering someone's proxy URL".
+ *
+ * SPEC 2.1: the empty provider (`""`) is the unconfigured state, not a provider with a base —
+ * it clears the field instead of leaving a stale or default URL in it. Nothing is invented.
  */
 export function resolveEndpointOnProviderChange(
   providerId: string,
   current: { endpoint: string; endpointCustom: boolean },
   catalog: Catalog,
 ): string {
+  if (providerId === "") return "";
   if (current.endpointCustom && current.endpoint.trim()) return current.endpoint;
   if (providerId === CUSTOM_PROVIDER) return current.endpoint.trim() ? current.endpoint : "";
   const provider = catalog.providers[providerId];

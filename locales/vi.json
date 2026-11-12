@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: mở bảng cài đặt",
+  "commandTranslateNote": "DualTran: dịch ghi chú thành ghi chú mới",
+  "commandTranslateSelection": "DualTran: dịch phần chọn bên dưới",
   "customModelLabel": "Mô hình tùy chỉnh…",
   "customModelPlaceholder": "ID mô hình, ví dụ: gpt-4o-mini",
   "customProviderLabel": "Điểm cuối tùy chỉnh (nhà cung cấp khác)",
+  "providerPlaceholder": "Chọn nhà cung cấp",
+  "providerRequiredForModel": "Hãy chọn nhà cung cấp trước",
+  "providerRequiredError": "Hãy chọn nhà cung cấp AI trong cài đặt trước khi dịch.",
   "engineAi": "AI (tương thích OpenAI)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "Chỉ được lưu trong hồ sơ Joplin này.",

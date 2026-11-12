@@ -5,6 +5,11 @@
  * list depends on the provider", cannot refresh a catalogue, and cannot show a password field.
  * So the panel is HTML in a Joplin view, and everything it decides lives here where it is
  * unit-testable without an Electron host.
+ *
+ * SPEC 2.1: a fresh install has no AI provider. `provider === ""` is the unconfigured state, not
+ * a provider with a default — the picker shows a disabled placeholder, the model and reasoning
+ * pickers are inert, and the endpoint is empty. Nothing falls back to OpenAI or to the custom
+ * endpoint on its own.
  */
 import {
   CUSTOM_MODEL,
@@ -67,13 +72,53 @@ export const DEFAULT_LANGUAGES: Record<string, string> = {
   ja: "Japanese",
 };
 
+/** Placeholder shown in the endpoint field while no provider is chosen (SPEC 2.1). */
+export const ENDPOINT_PLACEHOLDER = "https://";
+
+/**
+ * SPEC 2.1 — no provider selected. Read off the value rather than off a separate "configured"
+ * flag: the stored `""` is the whole state, so a config saved by an older version keeps working.
+ */
+export function isUnconfigured(model: Pick<PanelModel, "values"> | { provider?: string }): boolean {
+  const provider = "values" in model ? model.values.provider : model.provider;
+  return String(provider ?? "").trim() === "";
+}
+
+/** SPEC 2.1 — the model picker is inert until a provider exists. */
+export function modelDisabled(model: Pick<PanelModel, "values"> | { provider?: string }): boolean {
+  return isUnconfigured(model);
+}
+
+/**
+ * SPEC 2.1 — the reasoning picker is inert until a provider exists. The *stored* value stays the
+ * sentinel; only the control is disabled, so configuring a provider later does not lose it.
+ */
+export function reasoningDisabled(model: Pick<PanelModel, "values"> | { provider?: string }): boolean {
+  return isUnconfigured(model);
+}
+
+/**
+ * SPEC 2.1 — the error a translation entry refuses with when the AI engine has no provider.
+ * Returns `""` when the request may proceed: Google needs no provider, and a configured AI
+ * install has one. Callers use the non-empty string both as the failure message and as the
+ * primary button's tooltip, so the two can never disagree.
+ */
+export function providerRequired(
+  settings: Pick<PanelSettings, "engine" | "provider">,
+  t: Translator,
+): string {
+  if (settings.engine === "google") return "";
+  return String(settings.provider ?? "").trim() === "" ? t("providerRequiredError") : "";
+}
+
 function effortsFor(catalog: Catalog, providerId: string, modelId: string): string[] {
   return catalog.providers[providerId]?.models.find((model) => model.id === modelId)?.efforts ?? [];
 }
 
 /**
  * R2 — one alphabetical list. The custom endpoint row is the only non-catalogue entry and sits
- * last, because it is an action ("none of these"), not a provider name.
+ * last, because it is an action ("none of these"), not a provider name. An empty provider is
+ * *not* in this list: it is the picker's placeholder, rendered separately.
  */
 function providersFor(catalog: Catalog, t: Translator): ProviderOption[] {
   return [
@@ -94,6 +139,10 @@ function modelsWithCustom(catalog: Catalog, providerId: string, t: Translator): 
 /**
  * `settings`, `catalog`, `t` → everything the panel needs. `languages` is the full names table
  * (`language-names.json`); the small built-in set keeps the panel usable without it.
+ *
+ * A stored provider is kept verbatim (SPEC 2.1: stored values are never rewritten) — an id the
+ * catalogue no longer lists still renders as the selected row instead of silently becoming the
+ * custom endpoint.
  */
 export function buildPanelModel(
   settings: Partial<PanelSettings>,
@@ -103,11 +152,7 @@ export function buildPanelModel(
 ): PanelModel {
   const engine = settings.engine === "google" ? "google" : "ai";
   const target = (settings.target || "zh-CN").trim();
-  const configuredProvider = (settings.provider || "").trim();
-  const provider =
-    configuredProvider === CUSTOM_PROVIDER || catalog.providers[configuredProvider]
-      ? configuredProvider
-      : CUSTOM_PROVIDER;
+  const provider = (settings.provider || "").trim();
   const model = (settings.model || "").trim();
   const endpoint = (settings.endpoint || "").trim();
   const reasoning = (settings.reasoning || LOWEST).trim() || LOWEST;
@@ -125,7 +170,7 @@ export function buildPanelModel(
     provider,
     model,
     endpoint,
-    apiKey: settings.apiKey || "",
+    apiKey: String(settings.apiKey || ""),
     reasoning,
     endpointCustom: settings.endpointCustom === true,
   };
@@ -157,20 +202,26 @@ function withSelection(model: PanelModel, providerId: string, modelId: string, e
 /**
  * R3 + R2 + R4 together: choosing a provider moves the endpoint (unless overridden), reselects a
  * model from that provider's list, and re-derives the reasoning scale. Returns a NEW model.
+ *
+ * SPEC 2.1: `""` is the placeholder, not a provider, so it is not a choice — asking for it keeps
+ * the current provider. Once a provider is chosen the picker cannot go back to empty; the
+ * placeholder row stays in the markup but stays disabled.
  */
 export function applyProviderChange(model: PanelModel, providerId: string): PanelModel {
-  const provider = model.providers.find((option) => option.value === providerId);
-  const nextId = provider?.value ?? model.values.provider;
+  const requested = String(providerId ?? "").trim();
+  if (requested === "") return model;
+  const provider = model.providers.find((option) => option.value === requested);
+  if (!provider) return model;
   const endpoint = resolveEndpointOnProviderChange(
-    nextId,
+    provider.value,
     { endpoint: model.values.endpoint, endpointCustom: model.values.endpointCustom },
     model.catalog,
   );
-  const rows = model.modelsByProvider[nextId] ?? [];
+  const rows = model.modelsByProvider[provider.value] ?? [];
   // Keep the current model only if it belongs to the new provider's list.
   const keep = rows.some((row) => row.value === model.values.model) ? model.values.model : "";
   const nextModel = keep || rows.find((row) => row.value !== CUSTOM_MODEL)?.value || "";
-  return withSelection(model, nextId, nextModel, endpoint);
+  return withSelection(model, provider.value, nextModel, endpoint);
 }
 
 /** R3 — the user typed in the endpoint field: from now on it is theirs. */
@@ -215,7 +266,13 @@ export function readPanelMessage(raw: unknown): PanelMessage | null {
   return { action: message.action, draft };
 }
 
-/** Fold a draft over the current settings. Unknown keys are ignored; blanks fall back. */
+/**
+ * Fold a draft over the current settings. Unknown keys are ignored; blanks fall back.
+ *
+ * SPEC 2.1: an empty provider in the draft is the disabled placeholder, never a choice — it
+ * cannot clear a configured provider (only a fresh install legitimately stores `""`). Nothing
+ * here invents a provider or an endpoint that the user did not choose.
+ */
 export function mergeDraft(current: Partial<PanelSettings>, draft: PanelDraft | undefined): Partial<PanelSettings> {
   if (!draft) return { ...current };
   const text = (value: unknown, fallback: string) => (typeof value === "string" ? value.trim() : fallback);
@@ -224,13 +281,15 @@ export function mergeDraft(current: Partial<PanelSettings>, draft: PanelDraft | 
   // configured one rather than saving a blank that the next translation would send.
   const model =
     modelRaw === CUSTOM_MODEL ? text(draft.customModel, "") || (current.model || "") : modelRaw;
+  const provider = text(draft.provider, "");
+  const currentProvider = (current.provider ?? "").trim();
   return {
     engine: current.engine || "google",
     target: text(draft.language, current.target || "zh-CN"),
-    provider: text(draft.provider, current.provider || CUSTOM_PROVIDER),
+    provider: provider === "" ? currentProvider : provider,
     model,
     endpoint: text(draft.endpoint, current.endpoint || ""),
-    apiKey: typeof draft.apiKey === "string" ? draft.apiKey : current.apiKey || "",
+    apiKey: typeof draft.apiKey === "string" ? draft.apiKey : String(current.apiKey || ""),
     reasoning: text(draft.reasoning, current.reasoning || LOWEST),
     endpointCustom: typeof draft.endpointCustom === "boolean" ? draft.endpointCustom : current.endpointCustom === true,
   };
@@ -263,6 +322,24 @@ function optionsHtml(rows: ModelOption[], selected: string): string {
     .join("");
 }
 
+/**
+ * SPEC 2.1 — the provider `<select>`: a disabled placeholder first when nothing is chosen, then
+ * the one alphabetical list. The placeholder is not an option: it carries an empty value, cannot
+ * be picked, and is never fed to the R2 sort (the rows below it are the sortable list).
+ */
+function providerOptionsHtml(model: PanelModel): string {
+  const values = model.values;
+  if (!isUnconfigured(model)) return optionsHtml(model.providers, values.provider);
+  const placeholder = `<option value="" disabled selected>${escapeHtml(model.t("providerPlaceholder"))}</option>`;
+  // The real rows still render behind the placeholder so the list is visible and scrolls.
+  return `${placeholder}${optionsHtml(model.providers, "")}`;
+}
+
+/** SPEC 2.1 — an inert picker shows only its label row; it offers nothing to pick. */
+function disabledOptionsHtml(label: string): string {
+  return `<option value="" selected disabled>${escapeHtml(label)}</option>`;
+}
+
 function reasoningLabels(model: PanelModel, t: Translator): ModelOption[] {
   const resolved = model.reasoningResolved;
   return model.reasoningOptions.map((option) => {
@@ -278,6 +355,7 @@ function reasoningLabels(model: PanelModel, t: Translator): ModelOption[] {
 export function renderPanelHtml(model: PanelModel, status = ""): string {
   const t = model.t;
   const values = model.values;
+  const unconfigured = isUnconfigured(model);
   const reasoningRows = reasoningLabels(model, t);
   const modelRows = model.modelsByProvider[values.provider] ?? [];
   const isCustomModel = !modelRows.some((row) => row.value === values.model) && values.model !== "";
@@ -286,7 +364,7 @@ export function renderPanelHtml(model: PanelModel, status = ""): string {
   const modelSelectValue = values.model;
   // The box is visible whenever the select is not on a catalogue row, so an id the catalogue
   // does not list stays visible and editable instead of looking like a blank field.
-  const showCustomBox = isCustomModel || modelSelectValue === CUSTOM_MODEL;
+  const showCustomBox = modelRows.length > 0 && (isCustomModel || modelSelectValue === CUSTOM_MODEL);
   const reasoningHint = model.reasoningResolved
     ? t("hintReasoning", { RESOLVED: model.reasoningResolved })
     : t("reasoningNotDeclared");
@@ -299,6 +377,7 @@ export function renderPanelHtml(model: PanelModel, status = ""): string {
   body { font-family: sans-serif; font-size: 13px; margin: 12px; }
   label { display: block; margin: 10px 0 2px; font-weight: 600; }
   select, input { width: 100%; box-sizing: border-box; padding: 4px; }
+  select:disabled, input:disabled { color: #888; background: #f5f5f5; }
   .hint { color: #666; font-size: 11px; margin: 2px 0 0; }
   .row { display: flex; gap: 12px; }
   .row > div { flex: 1; }
@@ -329,16 +408,16 @@ export function renderPanelHtml(model: PanelModel, status = ""): string {
   </div>
 
   <label for="provider">${escapeHtml(t("labelProvider"))}</label>
-  <select id="provider">${optionsHtml(model.providers, values.provider)}</select>
+  <select id="provider">${providerOptionsHtml(model)}</select>
   <p class="hint">${escapeHtml(t("hintProvider"))}</p>
 
   <label for="model">${escapeHtml(t("labelModel"))}</label>
-  <select id="model">${optionsHtml(modelRows, modelSelectValue)}</select>
+  <select id="model"${unconfigured ? ' disabled aria-disabled="true"' : ""}>${unconfigured ? disabledOptionsHtml(t("providerRequiredForModel")) : optionsHtml(modelRows, modelSelectValue)}</select>
   <input id="customModel" type="text" placeholder="${escapeHtml(t("customModelPlaceholder"))}" value="${escapeHtml(showCustomBox ? values.model : "")}"${showCustomBox ? "" : " hidden"}>
   <p class="hint">${escapeHtml(t("hintModel"))}</p>
 
   <label for="endpoint">${escapeHtml(t("labelEndpoint"))}</label>
-  <input id="endpoint" type="text" data-custom="${values.endpointCustom ? "true" : "false"}" value="${escapeHtml(values.endpoint)}">
+  <input id="endpoint" type="text" data-custom="${values.endpointCustom ? "true" : "false"}" placeholder="${escapeHtml(ENDPOINT_PLACEHOLDER)}" value="${escapeHtml(values.endpoint)}">
   <p class="hint">${escapeHtml(t("hintEndpoint"))}</p>
 
   <div class="row">
@@ -349,7 +428,7 @@ export function renderPanelHtml(model: PanelModel, status = ""): string {
     </div>
     <div>
       <label for="reasoning">${escapeHtml(t("labelReasoning"))}</label>
-      <select id="reasoning">${optionsHtml(reasoningRows, values.reasoning)}</select>
+      <select id="reasoning"${unconfigured ? ' disabled aria-disabled="true"' : ""}>${optionsHtml(reasoningRows, values.reasoning)}</select>
       <p class="hint">${escapeHtml(reasoningHint)}</p>
     </div>
   </div>

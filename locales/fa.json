@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: باز کردن پنل تنظیمات",
+  "commandTranslateNote": "DualTran: ترجمه یادداشت به یک یادداشت جدید",
+  "commandTranslateSelection": "DualTran: ترجمه انتخاب در پایین",
   "customModelLabel": "مدل سفارشی…",
   "customModelPlaceholder": "شناسه مدل، مثلاً gpt-4o-mini",
   "customProviderLabel": "آدرس سرویس سفارشی (ارائه‌دهنده دیگر)",
+  "providerPlaceholder": "یک ارائه‌دهنده انتخاب کنید",
+  "providerRequiredForModel": "ابتدا یک ارائه‌دهنده انتخاب کنید",
+  "providerRequiredError": "پیش از ترجمه، در تنظیمات یک ارائه‌دهنده هوش مصنوعی انتخاب کنید.",
   "engineAi": "هوش مصنوعی (سازگار با OpenAI)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "تنها در همین پروفایل Joplin ذخیره می‌شود.",

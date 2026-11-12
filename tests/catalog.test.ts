@@ -186,6 +186,15 @@ describe("resolveEndpointOnProviderChange (R3)", () => {
       resolveEndpointOnProviderChange(CUSTOM_PROVIDER, { endpoint: "https://x.example/v1", endpointCustom: false }, catalog),
     ).toBe("https://x.example/v1");
   });
+
+  it("never autofills an endpoint for the empty provider", () => {
+    // SPEC 2.1: unconfigured means no endpoint at all — not the OpenAI default, not the last
+    // endpoint left behind by another provider.
+    expect(resolveEndpointOnProviderChange("", { endpoint: "", endpointCustom: false }, catalog)).toBe("");
+    expect(resolveEndpointOnProviderChange("", { endpoint: "https://api.openai.com/v1", endpointCustom: false }, catalog)).toBe(
+      "",
+    );
+  });
 });
 
 describe("resolveReasoningDepth (R4)", () => {

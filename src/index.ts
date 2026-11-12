@@ -25,6 +25,7 @@ import {
   applyProviderChange,
   buildPanelModel,
   mergeDraft,
+  providerRequired,
   readPanelMessage,
   renderPanelHtml,
 } from "./settingsPanel";
@@ -77,17 +78,18 @@ async function readSettings(): Promise<PanelSettings> {
     const value = values[key];
     return typeof value === "string" && value.trim() ? value.trim() : fallback;
   };
-  const storedEndpoint = text("endpoint", "");
+  // SPEC 2.1: a fresh install has no AI provider. `""` is the unconfigured state — never a
+  // provider, never an endpoint. Stored values are returned as they are.
   return {
     engine: text("engine", "google") === "ai" ? "ai" : "google",
     target: text("target", "zh-CN"),
-    provider: text("provider", CUSTOM_PROVIDER),
-    model: text("model", "gpt-4o-mini"),
-    endpoint: storedEndpoint || "https://api.openai.com/v1",
+    provider: text("provider", ""),
+    model: text("model", ""),
+    endpoint: text("endpoint", ""),
     apiKey: text("apiKey", ""),
     reasoning: text("reasoning", LOWEST),
     // An endpoint typed outside the panel is an override: a provider switch must not replace it.
-    endpointCustom: storedEndpoint !== "",
+    endpointCustom: text("endpoint", "") !== "",
   };
 }
 
@@ -136,7 +138,10 @@ async function saveSettings(next: Partial<PanelSettings>): Promise<void> {
   const patch: Record<string, string> = {
     engine: next.engine === "ai" ? "ai" : "google",
     target: String(next.target || "zh-CN"),
-    provider: String(next.provider || CUSTOM_PROVIDER),
+    // SPEC 2.1: "" is a legitimate stored value (unconfigured). Saving it is a no-op for the
+    // provider, never a rewrite into the custom entry — and an empty draft is already filtered
+    // out by `mergeDraft`, so a configured provider cannot be cleared from the panel.
+    provider: String(next.provider || ""),
     model: String(next.model || ""),
     endpoint: String(next.endpoint || ""),
     apiKey: String(next.apiKey || ""),
@@ -146,6 +151,16 @@ async function saveSettings(next: Partial<PanelSettings>): Promise<void> {
 }
 
 // ── engine call ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * SPEC 2.1 — the hard stop in front of every AI request. An AI install with no provider has no
+ * endpoint, no model and no key; guessing one (OpenAI, or the last custom URL) would send the
+ * user's text somewhere they never chose. Returns the localized message, or `""` when the
+ * request may proceed. Google is unaffected: it needs no provider.
+ */
+function providerBlocked(config: PanelSettings, t: Translator): string {
+  return providerRequired(config, t);
+}
 
 async function translateOne(text: string, config: PanelSettings): Promise<string> {
   const options = { text, target: config.target };
@@ -161,6 +176,11 @@ async function translateOne(text: string, config: PanelSettings): Promise<string
     if (!response.ok) throw new Error(`Google Translate answered HTTP ${response.status}`);
     return parseGoogleResponse(await response.json());
   }
+
+  // SPEC 2.1 — no provider, no request. Checked before the URL is even built, so an empty
+  // endpoint can never reach `normalizeEndpoint` and no fallback can sneak in behind it.
+  const blocked = providerBlocked(config, translatorFor());
+  if (blocked) throw new Error(blocked);
 
   const { url, init } = buildChatRequest(
     {
@@ -198,6 +218,19 @@ async function translateText(text: string, config: PanelSettings): Promise<strin
 
 // ── commands ────────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Read the settings and refuse early when the AI engine has no provider (SPEC 2.1). Returns the
+ * config, or `null` after showing the localized `providerRequiredError` — the same string the
+ * disabled command label carries as its tooltip.
+ */
+async function readSettingsForRequest(t: Translator): Promise<PanelSettings | null> {
+  const config = await readSettings();
+  const blocked = providerBlocked(config, t);
+  if (!blocked) return config;
+  await joplin.views.dialogs.showMessageBox(blocked);
+  return null;
+}
+
 /** Translate the open note into a sibling note, leaving the source untouched. */
 async function translateCurrentNote(): Promise<void> {
   const t = translatorFor();
@@ -211,8 +244,9 @@ async function translateCurrentNote(): Promise<void> {
     await joplin.views.dialogs.showMessageBox(t("msgEmptyNote"));
     return;
   }
+  const config = await readSettingsForRequest(t);
+  if (!config) return;
   try {
-    const config = await readSettings();
     const translated = await translateText(body, config);
     const parentId = note.parent_id;
     const folder = await joplin.data.get(["folders", parentId], { fields: ["id", "title"] });
@@ -246,8 +280,9 @@ async function translateSelection(): Promise<void> {
     await joplin.views.dialogs.showMessageBox(t("msgSelectTextFirst"));
     return;
   }
+  const config = await readSettingsForRequest(t);
+  if (!config) return;
   try {
-    const config = await readSettings();
     const translated = await translateText(selection.trim(), config);
     const body = `${note.body || ""}`.replace(selection, `${selection}\n\n${translated}`);
     await joplin.data.put(["notes", note.id], null, { body });
@@ -391,7 +426,9 @@ joplin.plugins.register({
         description: t("settingsTargetDescription"),
       },
       provider: {
-        value: CUSTOM_PROVIDER,
+        // SPEC 2.1: a fresh install has no provider. `""` renders as the disabled placeholder in
+        // the panel; the custom endpoint stays available as the last optional entry, not a default.
+        value: "",
         type: 2,
         section: SECTION,
         public: true,
@@ -399,7 +436,7 @@ joplin.plugins.register({
         description: t("settingsProviderDescription"),
       },
       model: {
-        value: "gpt-4o-mini",
+        value: "",
         type: 2,
         section: SECTION,
         public: true,
@@ -440,6 +477,15 @@ joplin.plugins.register({
       },
     });
 
+    // SPEC 2.1 — where a primary button exists, it is disabled while no provider is configured
+    // and carries the same localized string as its tooltip. A menu entry has no disabled state,
+    // so its label keeps its name and the command itself refuses with `providerRequiredError`.
+    const initialBlocked = providerBlocked(await readSettings(), t);
+    const commandState = (enabled: boolean) =>
+      enabled
+        ? {}
+        : { enabled: false, disabled: true, title: initialBlocked, tooltip: initialBlocked };
+
     await joplin.commands.register({
       name: "dualtranOpenSettings",
       label: t("commandOpenSettings"),
@@ -451,12 +497,14 @@ joplin.plugins.register({
       label: t("commandTranslateNote"),
       iconName: "fas fa-language",
       execute: translateCurrentNote,
+      ...commandState(initialBlocked === ""),
     });
     await joplin.commands.register({
       name: "dualtranTranslateSelection",
       label: t("commandTranslateSelection"),
       iconName: "fas fa-align-left",
       execute: translateSelection,
+      ...commandState(initialBlocked === ""),
     });
     await joplin.views.menuItems.create("dualtranMenuSettings", "dualtranOpenSettings", "tools");
     await joplin.views.menuItems.create("dualtranMenuNote", "dualtranTranslateNote", "tools");

@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: odpri ploščo nastavitev",
+  "commandTranslateNote": "DualTran: prevedi opombo v novo opombo",
+  "commandTranslateSelection": "DualTran: prevedi izbor spodaj",
   "customModelLabel": "Model po meri …",
   "customModelPlaceholder": "ID modela, npr. gpt-4o-mini",
   "customProviderLabel": "Končna točka po meri (drugi ponudnik)",
+  "providerPlaceholder": "Izberite ponudnika",
+  "providerRequiredForModel": "Najprej izberite ponudnika",
+  "providerRequiredError": "Pred prevajanjem v nastavitvah izberite ponudnika AI.",
   "engineAi": "AI (združljivo z OpenAI)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "Shranjeno le v tem profilu Joplin.",

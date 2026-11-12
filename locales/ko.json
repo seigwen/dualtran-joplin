@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: 설정 패널 열기",
+  "commandTranslateNote": "DualTran: 노트를 새 노트로 번역",
+  "commandTranslateSelection": "DualTran: 선택 항목을 아래에 번역",
   "customModelLabel": "사용자 지정 모델…",
   "customModelPlaceholder": "모델 ID, 예: gpt-4o-mini",
   "customProviderLabel": "사용자 지정 엔드포인트(다른 공급자)",
+  "providerPlaceholder": "제공자 선택",
+  "providerRequiredForModel": "먼저 제공자를 선택하세요",
+  "providerRequiredError": "번역하기 전에 설정에서 AI 제공자를 선택하세요.",
   "engineAi": "AI (OpenAI 호환)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "이 Joplin 프로필에만 저장됩니다.",

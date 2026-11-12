@@ -149,4 +149,32 @@ describe("locale files", () => {
       }
     }
   });
+
+  it("ships the SPEC 2.1 empty-provider strings in every locale", () => {
+    // The English source strings are a product decision: the placeholder, the disabled model
+    // picker's label, and the error a translation refuses with.
+    expect(english.providerPlaceholder).toBe("Select a provider");
+    expect(english.providerRequiredForModel).toBe("Select a provider first");
+    expect(english.providerRequiredError).toBe("Choose an AI provider in settings before translating.");
+    // Chinese is hand-written, not copied from English.
+    expect(files.zh_CN).toMatchObject({
+      providerPlaceholder: "请选择 AI 提供商",
+      providerRequiredForModel: "请先选择提供商",
+      providerRequiredError: "翻译前请先在设置中选择 AI 提供商。",
+    });
+    expect(files.zh_TW.providerPlaceholder).not.toBe(english.providerPlaceholder);
+    expect(files.zh_TW.providerRequiredError).not.toBe(english.providerRequiredError);
+    // Every other locale carries a real translation, not the English string left in place.
+    for (const locale of LOCALES) {
+      if (HAND_TRANSLATED.has(locale)) continue;
+      for (const key of SPEC_21_KEYS) {
+        expect(files[locale][key], `${locale}.${key}`).not.toBe("");
+        expect(files[locale][key], `${locale}.${key}`).not.toBe(english[key]);
+      }
+    }
+  });
 });
+
+/** Locales whose values are written by a person; the rest come from the translation table. */
+const HAND_TRANSLATED = new Set([SOURCE_LOCALE, "zh_CN", "zh_TW"]);
+const SPEC_21_KEYS = ["providerPlaceholder", "providerRequiredForModel", "providerRequiredError"];
