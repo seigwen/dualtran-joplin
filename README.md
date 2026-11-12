@@ -18,19 +18,24 @@ Build the plugin package and install it from Joplin:
 git clone https://github.com/seigwen/dualtran-joplin
 cd dualtran-joplin
 npm install
-npm run build          # produces dualtran-joplin.jpl
+npm run build          # produces joplin-plugin-dualtran.jpl
 ```
 
-Then in Joplin: **Tools → Options → Plugins → Install from file** → pick `dualtran-joplin.jpl`.
+Then in Joplin: **Tools → Options → Plugins → Install from file** → pick `joplin-plugin-dualtran.jpl`.
 
 ## Commands
 
 | Menu (Tools) | Effect |
 |---|---|
+| `DualTran: open settings panel` | Opens the plugin panel with provider/model/reasoning pickers |
 | `DualTran: translate note into a new note` | Translates the open note into a sibling note, source untouched |
 | `DualTran: translate selection below` | Inserts the translation under the selected text |
 
 ## Settings
+
+Open **Tools → Options → Plugins → DualTran** (Joplin's settings page), or use
+**Tools → DualTran: open settings panel** for the plugin's own dropdown panel. Both write the
+same values; the panel adds the provider/model/reasoning pickers.
 
 | Key | Default | Notes |
 |---|---|---|

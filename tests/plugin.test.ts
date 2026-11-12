@@ -16,11 +16,13 @@ import { describe, expect, it } from "vitest";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const bundlePath = resolve(root, "dist/index.js");
+const SECTION = "dualtran";
 
 interface FakeHost {
   settings: Record<string, unknown>;
   html: string[];
-  registered: Record<string, { label?: string; description?: string }>;
+  registered: Record<string, { label?: string; description?: string; public?: boolean; type?: number; section?: string }>;
+  sections: Record<string, { label?: string }>;
   commands: Map<string, () => Promise<unknown>>;
   handlers: Array<(message: unknown) => Promise<unknown>>;
   shown: number;
@@ -40,6 +42,7 @@ function boot(): FakeHost {
     },
     html: [],
     registered: {},
+    sections: {},
     commands: new Map(),
     handlers: [],
     shown: 0,
@@ -53,7 +56,9 @@ function boot(): FakeHost {
       },
     },
     settings: {
-      registerSection: async () => undefined,
+      registerSection: async (name: string, section: { label?: string }) => {
+        host.sections[name] = section;
+      },
       registerSettings: async (settings: FakeHost["registered"]) => {
         Object.assign(host.registered, settings);
       },
@@ -94,9 +99,6 @@ function boot(): FakeHost {
     console,
     setTimeout,
     clearTimeout,
-    // The CLI emits CommonJS for Electron, so the sandbox needs a module scope.
-    module: { exports: {} },
-    exports: {},
   };
   runInContext(readFileSync(bundlePath, "utf8"), createContext(sandbox));
   return host;
@@ -125,6 +127,23 @@ describe.skipIf(skip)("built plugin", () => {
     expect(html).toContain('<select id="reasoning">');
     // Offline: the built-in providers still populate the picker.
     expect(html).toContain("Ollama (local)");
+  });
+
+  it("registers every user-facing setting as public, so Options > Plugins lists DualTran", async () => {
+    const host = boot();
+    await host.onStart?.();
+
+    // Joplin's config screen filters on `public`; a private setting is registered but never
+    // rendered, which is exactly how v0.1.3 shipped an invisible settings page.
+    expect(host.sections[SECTION]?.label).toBe("DualTran");
+    for (const key of ["engine", "target", "provider", "model", "endpoint", "apiKey", "reasoning"]) {
+      expect(host.registered[key], key).toBeDefined();
+      expect(host.registered[key]?.public, key).toBe(true);
+      expect(host.registered[key]?.section, key).toBe(SECTION);
+      expect(host.registered[key]?.type, key).toBe(2);
+    }
+    // The catalogue cache is internal and must not add a sixth field to the options page.
+    expect(host.registered.catalogCache?.public).toBe(false);
   });
 
   it("saves a provider switch and autofills the endpoint", async () => {
