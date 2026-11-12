@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: ayarlar panelini aç",
+  "commandTranslateNote": "DualTran: notu yeni bir nota çevir",
+  "commandTranslateSelection": "DualTran: seçimi aşağıya çevir",
   "customModelLabel": "Özel model…",
   "customModelPlaceholder": "Model kimliği, örn. gpt-4o-mini",
   "customProviderLabel": "Özel uç nokta (başka sağlayıcı)",
+  "providerPlaceholder": "Bir sağlayıcı seçin",
+  "providerRequiredForModel": "Önce bir sağlayıcı seçin",
+  "providerRequiredError": "Çeviri yapmadan önce ayarlardan bir yapay zekâ sağlayıcısı seçin.",
   "engineAi": "AI (OpenAI uyumlu)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "Yalnızca bu Joplin profilinde saklanır.",

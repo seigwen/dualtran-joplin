@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: öppna inställningspanelen",
+  "commandTranslateNote": "DualTran: översätt anteckning till en ny anteckning",
+  "commandTranslateSelection": "DualTran: översätt markering nedan",
   "customModelLabel": "Anpassad modell…",
   "customModelPlaceholder": "Modell-id, t.ex. gpt-4o-mini",
   "customProviderLabel": "Anpassad slutpunkt (annan leverantör)",
+  "providerPlaceholder": "Välj en leverantör",
+  "providerRequiredForModel": "Välj en leverantör först",
+  "providerRequiredError": "Välj en AI-leverantör i inställningarna innan du översätter.",
   "engineAi": "AI (OpenAI-kompatibel)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "Lagras endast i denna Joplin-profil.",

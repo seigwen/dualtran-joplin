@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: deschide panoul de setări",
+  "commandTranslateNote": "DualTran: traduce nota într-o notă nouă",
+  "commandTranslateSelection": "DualTran: traduce selecția mai jos",
   "customModelLabel": "Model personalizat…",
   "customModelPlaceholder": "ID model, de ex. gpt-4o-mini",
   "customProviderLabel": "Endpoint personalizat (alt furnizor)",
+  "providerPlaceholder": "Alegeți un furnizor",
+  "providerRequiredForModel": "Alegeți mai întâi un furnizor",
+  "providerRequiredError": "Alegeți un furnizor AI din setări înainte de a traduce.",
   "engineAi": "AI (compatibil OpenAI)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "Stocată doar în acest profil Joplin.",

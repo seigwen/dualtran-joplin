@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: otvori panel podešavanja",
+  "commandTranslateNote": "DualTran: преведи белешку у нову белешку",
+  "commandTranslateSelection": "DualTran: преведи избор испод",
   "customModelLabel": "Prilagođeni model…",
   "customModelPlaceholder": "ID modela, npr. gpt-4o-mini",
   "customProviderLabel": "Prilagođena krajnja tačka (drugi dobavljač)",
+  "providerPlaceholder": "Изаберите добављача",
+  "providerRequiredForModel": "Прво изаберите добављача",
+  "providerRequiredError": "Пре превођења изаберите AI добављача у подешавањима.",
   "engineAi": "AI (OpenAI-kompatibilan)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "Čuva se samo u ovom Joplin profilu.",

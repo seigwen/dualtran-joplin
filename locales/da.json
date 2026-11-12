@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: åbn indstillingspanelet",
+  "commandTranslateNote": "DualTran: oversæt note til en ny note",
+  "commandTranslateSelection": "DualTran: oversæt markering nedenfor",
   "customModelLabel": "Brugerdefineret model…",
   "customModelPlaceholder": "Model-id, f.eks. gpt-4o-mini",
   "customProviderLabel": "Brugerdefineret endpoint (anden udbyder)",
+  "providerPlaceholder": "Vælg en udbyder",
+  "providerRequiredForModel": "Vælg først en udbyder",
+  "providerRequiredError": "Vælg en AI-udbyder i indstillingerne, før du oversætter.",
   "engineAi": "AI (OpenAI-kompatibel)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "Gemmes kun i denne Joplin-profil.",

@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: άνοιγμα πίνακα ρυθμίσεων",
+  "commandTranslateNote": "DualTran: μετάφραση σημείωσης σε νέα σημείωση",
+  "commandTranslateSelection": "DualTran: μετάφραση επιλογής από κάτω",
   "customModelLabel": "Προσαρμοσμένο μοντέλο…",
   "customModelPlaceholder": "Αναγνωριστικό μοντέλου, π.χ. gpt-4o-mini",
   "customProviderLabel": "Προσαρμοσμένο endpoint (άλλος πάροχος)",
+  "providerPlaceholder": "Επιλέξτε πάροχο",
+  "providerRequiredForModel": "Επιλέξτε πρώτα πάροχο",
+  "providerRequiredError": "Επιλέξτε πάροχο AI στις ρυθμίσεις πριν τη μετάφραση.",
   "engineAi": "AI (συμβατό με OpenAI)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "Αποθηκεύεται μόνο σε αυτό το προφίλ του Joplin.",

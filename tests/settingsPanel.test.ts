@@ -66,10 +66,20 @@ describe("buildPanelModel", () => {
     expect(rendered).toContain('<option value="my-ft-1" selected>my-ft-1</option>');
   });
 
-  it("falls back to the custom provider rather than an empty picker", () => {
+  it("keeps an empty provider empty instead of selecting the custom endpoint", () => {
+    // SPEC 2.1: the custom endpoint is an action the user picks, never a default. A stored ""
+    // means "not configured yet" and the picker shows its disabled placeholder instead.
     const panel = model({ provider: "" });
-    expect(panel.values.provider).toBe(CUSTOM_PROVIDER);
+    expect(panel.values.provider).toBe("");
+    // The custom entry still exists for anyone who wants it — just as the last real row.
+    expect(panel.providers[panel.providers.length - 1].value).toBe(CUSTOM_PROVIDER);
     expect(panel.modelsByProvider[CUSTOM_PROVIDER].length).toBeGreaterThan(0);
+  });
+
+  it("keeps a provider id the catalogue does not know verbatim", () => {
+    // Stored values are never rewritten: an id from an older catalogue must survive, not turn
+    // into the custom entry (which would also move the endpoint on the next save).
+    expect(model({ provider: "retired-provider" }).values.provider).toBe("retired-provider");
   });
 
   it("resolves the lowest sentinel against the selected model", () => {

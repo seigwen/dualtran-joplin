@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: avaa asetuspaneeli",
+  "commandTranslateNote": "DualTran: käännä muistiinpano uudeksi muistiinpanoksi",
+  "commandTranslateSelection": "DualTran: käännä valinta alle",
   "customModelLabel": "Mukautettu malli…",
   "customModelPlaceholder": "Mallin tunnus, esim. gpt-4o-mini",
   "customProviderLabel": "Mukautettu päätepiste (muu tarjoaja)",
+  "providerPlaceholder": "Valitse tarjoaja",
+  "providerRequiredForModel": "Valitse ensin tarjoaja",
+  "providerRequiredError": "Valitse AI-tarjoaja asetuksista ennen kääntämistä.",
   "engineAi": "Tekoäly (OpenAI-yhteensopiva)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "Tallennetaan vain tähän Joplin-profiiliin.",

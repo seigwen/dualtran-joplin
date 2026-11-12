@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: obrir el panell de configuració",
+  "commandTranslateNote": "DualTran: tradueix la nota a una nota nova",
+  "commandTranslateSelection": "DualTran: tradueix la selecció a sota",
   "customModelLabel": "Model personalitzat…",
   "customModelPlaceholder": "Identificador del model, p. ex. gpt-4o-mini",
   "customProviderLabel": "Punt final personalitzat (altre proveïdor)",
+  "providerPlaceholder": "Trieu un proveïdor",
+  "providerRequiredForModel": "Trieu primer un proveïdor",
+  "providerRequiredError": "Trieu un proveïdor d'IA a la configuració abans de traduir.",
   "engineAi": "IA (compatible amb OpenAI)",
   "engineGoogle": "Google Traductor",
   "hintApiKey": "Es desa només en aquest perfil de Joplin.",

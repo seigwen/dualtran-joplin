@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: apri il pannello delle impostazioni",
+  "commandTranslateNote": "DualTran: traduci la nota in una nuova nota",
+  "commandTranslateSelection": "DualTran: traduci la selezione sotto",
   "customModelLabel": "Modello personalizzato…",
   "customModelPlaceholder": "ID del modello, es. gpt-4o-mini",
   "customProviderLabel": "Endpoint personalizzato (altro provider)",
+  "providerPlaceholder": "Scegli un fornitore",
+  "providerRequiredForModel": "Scegli prima un fornitore",
+  "providerRequiredError": "Scegli un fornitore di IA nelle impostazioni prima di tradurre.",
   "engineAi": "IA (compatibile con OpenAI)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "Conservata solo in questo profilo di Joplin.",

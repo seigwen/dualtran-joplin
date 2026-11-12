@@ -1,5 +1,5 @@
 {
-  "spec": "2.0.0",
+  "spec": "2.1.0",
   "host": "dualtran-joplin",
   "payload": "tests/conformance.test.ts",
   "payloadCommand": "sh scripts/conformance/emit-payload.sh",
@@ -9,7 +9,15 @@
       "providerSeparator",
       "__separator__",
       "__more__",
-      "More (models.dev)"
+      "More (models.dev)",
+      {
+        "token": "provider-fallback-openai",
+        "regex": "\\|\\|\\s*[\"']openai[\"']"
+      },
+      {
+        "token": "provider-fallback-custom",
+        "regex": "\\|\\|\\s*CUSTOM_PROVIDER"
+      }
     ]
   },
   "platformLimits": []

@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: otvori panel postavki",
+  "commandTranslateNote": "DualTran: prevedi bilješku u novu bilješku",
+  "commandTranslateSelection": "DualTran: prevedi odabir ispod",
   "customModelLabel": "Prilagođeni model…",
   "customModelPlaceholder": "ID modela, npr. gpt-4o-mini",
   "customProviderLabel": "Prilagođena krajnja točka (drugi davatelj)",
+  "providerPlaceholder": "Odaberite pružatelja",
+  "providerRequiredForModel": "Najprije odaberite pružatelja",
+  "providerRequiredError": "Odaberite AI pružatelja u postavkama prije prevođenja.",
   "engineAi": "AI (OpenAI-kompatibilno)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "Sprema se samo u ovom Joplin profilu.",

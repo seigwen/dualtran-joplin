@@ -1,8 +1,13 @@
 {
   "commandOpenSettings": "DualTran: открыть панель настроек",
+  "commandTranslateNote": "DualTran: перевести заметку в новую заметку",
+  "commandTranslateSelection": "DualTran: перевести выделение ниже",
   "customModelLabel": "Своя модель…",
   "customModelPlaceholder": "Идентификатор модели, например gpt-4o-mini",
   "customProviderLabel": "Свой эндпоинт (другой провайдер)",
+  "providerPlaceholder": "Выберите провайдера",
+  "providerRequiredForModel": "Сначала выберите провайдера",
+  "providerRequiredError": "Перед переводом выберите провайдера ИИ в настройках.",
   "engineAi": "ИИ (совместимый с OpenAI)",
   "engineGoogle": "Google Translate",
   "hintApiKey": "Хранится только в этом профиле Joplin.",
