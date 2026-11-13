@@ -55,5 +55,6 @@
   "statusRefreshFailed": "به‌روزرسانی کاتالوگ انجام نشد؛ از فهرست ذخیره‌شده استفاده می‌شود.",
   "statusRefreshed": "کاتالوگ به‌روزرسانی شد ({COUNT} ارائه‌دهنده).",
   "statusRefreshing": "در حال به‌روزرسانی کاتالوگ…",
-  "statusSaved": "ذخیره شد."
+  "statusSaved": "ذخیره شد.",
+  "closeButton": "بستن تنظیمات"
 }

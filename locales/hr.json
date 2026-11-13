@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Nije moguće osvježiti katalog; koristi se predmemorirani popis.",
   "statusRefreshed": "Katalog je ažuriran ({COUNT} davatelja).",
   "statusRefreshing": "Osvježavanje kataloga…",
-  "statusSaved": "Spremljeno."
+  "statusSaved": "Spremljeno.",
+  "closeButton": "Zatvori postavke"
 }

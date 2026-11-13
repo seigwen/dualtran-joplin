@@ -9,7 +9,7 @@
   "providerRequiredForModel": "ئاۋۋال مەملىكەت تاللاڭ",
   "providerRequiredError": "تەرجىمە قىلىشتىن بۇرۇن تەڭشەكتىكى AI مەملىكىتىنى تاللاڭ.",
   "engineAi": "AI (OpenAI بىلەن ماس)",
-  "engineGoogle": "Google Translate",
+  "engineGoogle": "Google تەرجىمىسى",
   "hintApiKey": "پەقەت بۇ Joplin پروفىلىدا ساقلىنىدۇ.",
   "hintEndpoint": "تەمىنلىگۈچىدىن تولدۇرۇلىدۇ. ئۆزگەرتىش ئۈچۈن ئۆزىڭىزنىڭكىنى يېزىڭ؛ تەمىنلىگۈچىنى ئالماشتۇرسىڭىزمۇ ساقلىنىپ قالىدۇ.",
   "hintEngine": "Google ئۈچۈن ئاچقۇچ كەتمەيدۇ؛ AI ھەرقانداق OpenAI بىلەن ماس كېلىدىغان ئېندپوئىنتنى ئىشلىتىدۇ.",
@@ -55,5 +55,6 @@
   "statusRefreshFailed": "كاتالوگنى يېڭىلىغىلى بولمىدى؛ ۋاقىتلىق ساقلانغان تىزىملىك ئىشلىتىلىدۇ.",
   "statusRefreshed": "كاتالوگ يېڭىلاندى ({COUNT} تەمىنلىگۈچى).",
   "statusRefreshing": "كاتالوگ يېڭىلىنىۋاتىدۇ…",
-  "statusSaved": "ساقلاندى."
+  "statusSaved": "ساقلاندى.",
+  "closeButton": "تەڭشەكلەرنى تاقاڭ"
 }

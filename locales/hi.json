@@ -55,5 +55,6 @@
   "statusRefreshFailed": "कैटलॉग रिफ़्रेश नहीं हो सका; कैश की गई सूची का उपयोग किया जा रहा है।",
   "statusRefreshed": "कैटलॉग अपडेट हो गया ({COUNT} प्रदाता)।",
   "statusRefreshing": "कैटलॉग रिफ़्रेश हो रहा है…",
-  "statusSaved": "सहेज लिया गया।"
+  "statusSaved": "सहेज लिया गया।",
+  "closeButton": "सेटिंग्स बंद करें"
 }

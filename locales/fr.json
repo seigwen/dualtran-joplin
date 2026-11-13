@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Impossible d'actualiser le catalogue ; utilisation de la liste en cache.",
   "statusRefreshed": "Catalogue mis à jour ({COUNT} fournisseurs).",
   "statusRefreshing": "Actualisation du catalogue…",
-  "statusSaved": "Enregistré."
+  "statusSaved": "Enregistré.",
+  "closeButton": "Fermer les paramètres"
 }

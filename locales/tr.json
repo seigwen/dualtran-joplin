@@ -9,7 +9,7 @@
   "providerRequiredForModel": "Önce bir sağlayıcı seçin",
   "providerRequiredError": "Çeviri yapmadan önce ayarlardan bir yapay zekâ sağlayıcısı seçin.",
   "engineAi": "AI (OpenAI uyumlu)",
-  "engineGoogle": "Google Translate",
+  "engineGoogle": "Google Çeviri",
   "hintApiKey": "Yalnızca bu Joplin profilinde saklanır.",
   "hintEndpoint": "Sağlayıcıdan otomatik doldurulur. Geçersiz kılmak için kendi uç noktanızı yazın; sağlayıcıyı değiştirdiğinizde korunur.",
   "hintEngine": "Google anahtar gerektirmez; AI herhangi bir OpenAI uyumlu uç nokta kullanır.",
@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Katalog yenilenemedi; önbelleğe alınmış liste kullanılıyor.",
   "statusRefreshed": "Katalog güncellendi ({COUNT} sağlayıcı).",
   "statusRefreshing": "Katalog yenileniyor…",
-  "statusSaved": "Kaydedildi."
+  "statusSaved": "Kaydedildi.",
+  "closeButton": "Ayarları kapat"
 }

@@ -254,14 +254,14 @@ export function applyReasoningChange(model: PanelModel, setting: string): PanelM
  * message is not one we understand.
  */
 export interface PanelMessage {
-  action: "save" | "refresh";
+  action: "save" | "refresh" | "close";
   draft?: PanelDraft;
 }
 
 export function readPanelMessage(raw: unknown): PanelMessage | null {
   if (!raw || typeof raw !== "object") return null;
   const message = raw as Partial<PanelMessage>;
-  if (message.action !== "save" && message.action !== "refresh") return null;
+  if (message.action !== "save" && message.action !== "refresh" && message.action !== "close") return null;
   const draft = message.draft && typeof message.draft === "object" ? message.draft : undefined;
   return { action: message.action, draft };
 }
@@ -381,6 +381,10 @@ export function renderPanelHtml(model: PanelModel, status = ""): string {
   .hint { color: #666; font-size: 11px; margin: 2px 0 0; }
   .row { display: flex; gap: 12px; }
   .row > div { flex: 1; }
+  .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .panel-head h2 { margin: 0; }
+  .panel-close { border: 1px solid #aaa; border-radius: 4px; background: #fff; color: #333; font-size: 12px; line-height: 1.4; padding: 2px 8px; cursor: pointer; white-space: nowrap; }
+  .panel-close:hover { background: #eee; }
   .actions { margin-top: 16px; display: flex; gap: 8px; }
   #status { color: #666; margin-top: 8px; }
   [hidden] { display: none !important; }
@@ -388,7 +392,10 @@ export function renderPanelHtml(model: PanelModel, status = ""): string {
 </head>
 <body>
 <form id="dualtran" onsubmit="return false">
-  <h2>${escapeHtml(t("panelTitle"))}</h2>
+  <div class="panel-head">
+    <h2>${escapeHtml(t("panelTitle"))}</h2>
+    <button id="close" class="panel-close" type="button" aria-label="${escapeHtml(t("closeButton"))}" title="${escapeHtml(t("closeButton"))}">${escapeHtml(t("closeButton"))}</button>
+  </div>
   <p class="hint">${escapeHtml(t("panelIntro"))}</p>
 
   <div class="row">

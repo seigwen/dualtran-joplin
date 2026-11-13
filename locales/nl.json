@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Kon de catalogus niet vernieuwen; de lijst uit de cache wordt gebruikt.",
   "statusRefreshed": "Catalogus bijgewerkt ({COUNT} providers).",
   "statusRefreshing": "Catalogus wordt vernieuwd…",
-  "statusSaved": "Opgeslagen."
+  "statusSaved": "Opgeslagen.",
+  "closeButton": "Instellingen sluiten"
 }

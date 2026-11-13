@@ -19,7 +19,7 @@
   "hintTarget": "Sproget, som oversættelserne skrives på.",
   "htmlLang": "en",
   "labelApiKey": "API-nøgle",
-  "labelEndpoint": "Endpoint",
+  "labelEndpoint": "Slutpunkt",
   "labelEngine": "Motor",
   "labelModel": "Model",
   "labelProvider": "Udbyder",
@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Kunne ikke opdatere kataloget; bruger den cachelagrede liste.",
   "statusRefreshed": "Katalog opdateret ({COUNT} udbydere).",
   "statusRefreshing": "Opdaterer kataloget…",
-  "statusSaved": "Gemt."
+  "statusSaved": "Gemt.",
+  "closeButton": "Luk indstillinger"
 }

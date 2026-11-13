@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Nije moguće osvežiti katalog; koristi se keširana lista.",
   "statusRefreshed": "Katalog je ažuriran ({COUNT} dobavljača).",
   "statusRefreshing": "Osvežavanje kataloga…",
-  "statusSaved": "Sačuvano."
+  "statusSaved": "Sačuvano.",
+  "closeButton": "Zatvori podešavanja"
 }

@@ -9,7 +9,7 @@
   "providerRequiredForModel": "Сначала выберите провайдера",
   "providerRequiredError": "Перед переводом выберите провайдера ИИ в настройках.",
   "engineAi": "ИИ (совместимый с OpenAI)",
-  "engineGoogle": "Google Translate",
+  "engineGoogle": "Google Переводчик",
   "hintApiKey": "Хранится только в этом профиле Joplin.",
   "hintEndpoint": "Подставляется из провайдера. Введите свой, чтобы переопределить; он сохраняется при смене провайдера.",
   "hintEngine": "Для Google ключ не нужен; ИИ использует любой совместимый с OpenAI эндпоинт.",
@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Не удалось обновить каталог; используется кэшированный список.",
   "statusRefreshed": "Каталог обновлён ({COUNT} провайдеров).",
   "statusRefreshing": "Обновление каталога…",
-  "statusSaved": "Сохранено."
+  "statusSaved": "Сохранено.",
+  "closeButton": "Закрыть настройки"
 }

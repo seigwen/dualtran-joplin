@@ -9,7 +9,7 @@
   "providerRequiredForModel": "Спочатку виберіть постачальника",
   "providerRequiredError": "Перед перекладом виберіть постачальника ШІ в налаштуваннях.",
   "engineAi": "ШІ (сумісний з OpenAI)",
-  "engineGoogle": "Google Translate",
+  "engineGoogle": "Google Перекладач",
   "hintApiKey": "Зберігається лише в цьому профілі Joplin.",
   "hintEndpoint": "Заповнюється з провайдера. Введіть власну адресу, щоб замінити її; вона зберігається під час зміни провайдера.",
   "hintEngine": "Google не потребує ключ; ШІ використовує будь-який ендпоінт, сумісний з OpenAI.",
@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Не вдалося оновити каталог; використовується кешований список.",
   "statusRefreshed": "Каталог оновлено ({COUNT} провайдерів).",
   "statusRefreshing": "Оновлення каталогу…",
-  "statusSaved": "Збережено."
+  "statusSaved": "Збережено.",
+  "closeButton": "Закрити налаштування"
 }

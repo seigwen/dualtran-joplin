@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Der Katalog konnte nicht aktualisiert werden; die zwischengespeicherte Liste wird verwendet.",
   "statusRefreshed": "Katalog aktualisiert ({COUNT} Anbieter).",
   "statusRefreshing": "Katalog wird aktualisiert…",
-  "statusSaved": "Gespeichert."
+  "statusSaved": "Gespeichert.",
+  "closeButton": "Einstellungen schließen"
 }

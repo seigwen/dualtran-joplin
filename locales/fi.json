@@ -9,7 +9,7 @@
   "providerRequiredForModel": "Valitse ensin tarjoaja",
   "providerRequiredError": "Valitse AI-tarjoaja asetuksista ennen kääntämistä.",
   "engineAi": "Tekoäly (OpenAI-yhteensopiva)",
-  "engineGoogle": "Google Translate",
+  "engineGoogle": "Google Kääntäjä",
   "hintApiKey": "Tallennetaan vain tähän Joplin-profiiliin.",
   "hintEndpoint": "Täytetään tarjoajan perusteella. Kirjoita oma korvataksesi sen; se säilytetään, kun vaihdat tarjoajaa.",
   "hintEngine": "Google ei vaadi avainta; Tekoäly käyttää mitä tahansa OpenAI-yhteensopivaa päätepistettä.",
@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Luetteloa ei voitu päivittää; käytetään välimuistissa olevaa listaa.",
   "statusRefreshed": "Luettelo päivitetty ({COUNT} tarjoajaa).",
   "statusRefreshing": "Päivitetään luetteloa…",
-  "statusSaved": "Tallennettu."
+  "statusSaved": "Tallennettu.",
+  "closeButton": "Sulje asetukset"
 }

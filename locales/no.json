@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Kunne ikke oppdatere katalogen; bruker den mellomlagrede listen.",
   "statusRefreshed": "Katalogen oppdatert ({COUNT} leverandører).",
   "statusRefreshing": "Oppdaterer katalogen…",
-  "statusSaved": "Lagret."
+  "statusSaved": "Lagret.",
+  "closeButton": "Lukk innstillinger"
 }

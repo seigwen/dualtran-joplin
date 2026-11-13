@@ -9,7 +9,7 @@
   "providerRequiredForModel": "Először válasszon szolgáltatót",
   "providerRequiredError": "Fordítás előtt válasszon AI-szolgáltatót a beállításokban.",
   "engineAi": "AI (OpenAI-kompatibilis)",
-  "engineGoogle": "Google Translate",
+  "engineGoogle": "Google Fordító",
   "hintApiKey": "Csak ebben a Joplin-profilban tárolódik.",
   "hintEndpoint": "A szolgáltatótól töltődik ki. Saját érték beírásával felülírható; szolgáltatóváltáskor megmarad.",
   "hintEngine": "A Google nem igényel kulcsot; az AI bármilyen OpenAI-kompatibilis végpontot használ.",
@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Nem sikerült frissíteni a katalógust; a gyorsítótárazott listát használjuk.",
   "statusRefreshed": "Katalógus frissítve ({COUNT} szolgáltató).",
   "statusRefreshing": "A katalógus frissítése…",
-  "statusSaved": "Mentve."
+  "statusSaved": "Mentve.",
+  "closeButton": "Beállítások bezárása"
 }

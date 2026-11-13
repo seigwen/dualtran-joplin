@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Katalogu neizdevās atjaunināt; tiek izmantots iepriekš saglabātais saraksts.",
   "statusRefreshed": "Katalogs atjaunināts ({COUNT} pakalpojumu sniedzēji).",
   "statusRefreshing": "Notiek kataloga atjaunināšana…",
-  "statusSaved": "Saglabāts."
+  "statusSaved": "Saglabāts.",
+  "closeButton": "Aizvērt iestatījumus"
 }

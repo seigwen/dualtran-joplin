@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Không thể làm mới danh mục; đang sử dụng danh sách trong bộ nhớ đệm.",
   "statusRefreshed": "Đã cập nhật danh mục ({COUNT} nhà cung cấp).",
   "statusRefreshing": "Đang làm mới danh mục…",
-  "statusSaved": "Đã lưu."
+  "statusSaved": "Đã lưu.",
+  "closeButton": "Đóng cài đặt"
 }

@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Kon die katalogus nie verfris nie; die gekaste lys word gebruik.",
   "statusRefreshed": "Katalogus opgedateer ({COUNT} verskaffers).",
   "statusRefreshing": "Die katalogus word verfris…",
-  "statusSaved": "Gestoor."
+  "statusSaved": "Gestoor.",
+  "closeButton": "Sluit instellings"
 }

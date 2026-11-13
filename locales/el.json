@@ -19,7 +19,7 @@
   "hintTarget": "Η γλώσσα στην οποία γράφονται οι μεταφράσεις.",
   "htmlLang": "en",
   "labelApiKey": "Κλειδί API",
-  "labelEndpoint": "Endpoint",
+  "labelEndpoint": "Τελικό σημείο",
   "labelEngine": "Μηχανή",
   "labelModel": "Μοντέλο",
   "labelProvider": "Πάροχος",
@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Δεν ήταν δυνατή η ανανέωση του καταλόγου· θα χρησιμοποιηθεί η προσωρινά αποθηκευμένη λίστα.",
   "statusRefreshed": "Ο κατάλογος ενημερώθηκε ({COUNT} πάροχοι).",
   "statusRefreshing": "Γίνεται ανανέωση του καταλόγου…",
-  "statusSaved": "Αποθηκεύτηκε."
+  "statusSaved": "Αποθηκεύτηκε.",
+  "closeButton": "Κλείσιμο ρυθμίσεων"
 }

@@ -356,6 +356,11 @@ async function handlePanelMessage(message: unknown): Promise<boolean> {
   const t = translatorFor(panelLocale);
   const current = await readSettings();
 
+  if (received.action === "close") {
+    if (panelHandle) await joplin.views.panels.show(panelHandle, false);
+    return true;
+  }
+
   if (received.action === "refresh") {
     const state = await loadCatalog({ force: true });
     const rebuilt = buildPanelModel(current, state.catalog, t, languageNames);

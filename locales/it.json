@@ -22,7 +22,7 @@
   "labelEndpoint": "Endpoint",
   "labelEngine": "Motore",
   "labelModel": "Modello",
-  "labelProvider": "Provider",
+  "labelProvider": "Fornitore",
   "labelReasoning": "Sforzo di ragionamento",
   "labelTarget": "Lingua di destinazione",
   "msgEmptyNote": "Questa nota è vuota.",
@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Impossibile aggiornare il catalogo; verrà usato l'elenco in cache.",
   "statusRefreshed": "Catalogo aggiornato ({COUNT} provider).",
   "statusRefreshing": "Aggiornamento del catalogo in corso…",
-  "statusSaved": "Salvato."
+  "statusSaved": "Salvato.",
+  "closeButton": "Chiudi impostazioni"
 }
