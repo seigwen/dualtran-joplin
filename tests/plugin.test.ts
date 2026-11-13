@@ -8,7 +8,10 @@
  *
  * Skipped when dist/ is absent (fresh checkout, `npm test` before `npm run build`).
  */
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync } from "node:fs";
+import { createRequire } from "node:module";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createContext, runInContext } from "node:vm";
@@ -25,13 +28,16 @@ interface FakeHost {
   sections: Record<string, { label?: string }>;
   commands: Map<string, () => Promise<unknown>>;
   handlers: Array<(message: unknown) => Promise<unknown>>;
+  dataDir: string;
   shown: number;
+  hidden: number;
   visible: boolean;
   onStart: (() => Promise<void>) | null;
 }
 
-function boot(): FakeHost {
+function boot(options: { catalog?: unknown; legacyCache?: string } = {}): FakeHost {
   const host: FakeHost = {
+    dataDir: mkdtempSync(join(tmpdir(), "dualtran-plugin-")),
     settings: {
       engine: "ai",
       target: "zh-CN",
@@ -40,6 +46,7 @@ function boot(): FakeHost {
       endpoint: "",
       apiKey: "k",
       reasoning: "lowest",
+      catalogCache: options.legacyCache ?? "",
     },
     html: [],
     registered: {},
@@ -47,12 +54,14 @@ function boot(): FakeHost {
     commands: new Map(),
     handlers: [],
     shown: 0,
+    hidden: 0,
     visible: true,
     onStart: null,
   };
 
   const joplin = {
     plugins: {
+      dataDir: async () => host.dataDir,
       register: (definition: { onStart: () => Promise<void> }) => {
         host.onStart = definition.onStart;
       },
@@ -91,6 +100,10 @@ function boot(): FakeHost {
           host.shown += show ? 1 : 0;
           host.visible = show;
         },
+        hide: async (_handle: string) => {
+          host.hidden += 1;
+          host.visible = false;
+        },
       },
     },
   };
@@ -98,7 +111,11 @@ function boot(): FakeHost {
   const sandbox: Record<string, unknown> = {
     joplin,
     // Offline: the catalogue refresh must fall back to the built-ins instead of hanging.
-    fetch: async () => ({ ok: false, status: 503, json: async () => ({}) }),
+    require: createRequire(import.meta.url),
+    fetch: async () =>
+      options.catalog
+        ? { ok: true, status: 200, json: async () => options.catalog }
+        : { ok: false, status: 503, json: async () => ({}) },
     console,
     setTimeout,
     clearTimeout,
@@ -186,6 +203,9 @@ describe.skipIf(skip)("built plugin", () => {
     await host.commands.get("dualtranOpenSettings")?.();
     expect(host.visible).toBe(true);
     expect(await host.handlers[0]({ action: "close" })).toBe(true);
+    // `hide` is the documented method; the fake host used to implement only `show`, so this
+    // test could not tell the two apart. Keep the explicit call and assert it.
+    expect(host.hidden).toBe(1);
     expect(host.visible).toBe(false);
   });
 
@@ -205,5 +225,31 @@ describe.skipIf(skip)("built plugin", () => {
     expect(await host.handlers[0]({ action: "refresh" })).toBe(true);
     expect(host.html.length).toBe(before + 1);
     expect(host.html[host.html.length - 1]).toContain('role="status"');
+  });
+
+  it("stores the catalogue in the plugin data dir, never in settings", async () => {
+    const catalog = {
+      openai: { id: "openai", name: "OpenAI", api: "https://api.openai.com/v1", models: { "gpt-4o": { id: "gpt-4o", name: "GPT-4o" } } },
+    };
+    const host = boot({ catalog });
+    await host.onStart?.();
+
+    const file = join(host.dataDir, "catalog-cache.json");
+    expect(existsSync(file)).toBe(true);
+    const stored = JSON.parse(readFileSync(file, "utf8")) as { fetchedAt: number; raw: unknown };
+    expect(stored.raw).toEqual(catalog);
+    // The settings table must stay small: the multi-megabyte catalogue is what bloated the DB.
+    expect(host.settings.catalogCache).toBe("");
+  });
+
+  it("migrates a legacy catalogue setting to the data dir and clears it", async () => {
+    const cache = { fetchedAt: Date.now(), raw: { legacy: { id: "legacy", name: "Legacy", api: "https://legacy.test", models: {} } } };
+    const host = boot({ legacyCache: JSON.stringify(cache) });
+    await host.onStart?.();
+
+    const file = join(host.dataDir, "catalog-cache.json");
+    expect(existsSync(file)).toBe(true);
+    expect(JSON.parse(readFileSync(file, "utf8"))).toMatchObject({ raw: cache.raw });
+    expect(host.settings.catalogCache).toBe("");
   });
 });
