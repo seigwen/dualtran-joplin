@@ -53,6 +53,11 @@ class CDP {
     });
   }
 
+  /** Fire-and-forget: hiding the panel can destroy the frame mid-call, so the response may never come. */
+  notify(method, params = {}) {
+    this.ws.send(JSON.stringify({ id: this.nextId++, method, params }));
+  }
+
   send(method, params = {}) {
     const id = this.nextId++;
     this.ws.send(JSON.stringify({ id, method, params }));
@@ -170,8 +175,10 @@ async function checkHandlers(main) {
 }
 
 async function clickClose(main, contextId) {
-  await main.send("Runtime.evaluate", { expression: "document.getElementById('close').click()", contextId });
-  await sleep(700);
+  // Do not await the reply: the click hides the panel, which can tear down the frame (and its
+  // execution context) before Chrome sends the Runtime.evaluate result.
+  main.notify("Runtime.evaluate", { expression: "document.getElementById('close').click()", contextId });
+  await sleep(900);
   const state = await panelState(main);
   if (state.present && state.width > 0) throw new Error(`close did not hide the panel: still ${state.width}x${state.height}`);
   return state;

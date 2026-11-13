@@ -54,6 +54,11 @@ Run it whenever `src/panel.js`, `src/settingsPanel.ts`, `src/index.ts` or the bu
 change, and before any release. A screenshot of a rendered panel is not evidence; only a click
 that changes host state is.
 
+The smoke sends the close click **fire-and-forget** and then polls the panel width. Awaiting the
+`Runtime.evaluate` reply across the panel teardown crashed Joplin's renderer once
+("Renderer process gone"): the frame (and its execution context) disappears before Chrome can
+answer. Poll state instead of awaiting the click.
+
 ## Deploying a build to the Windows node
 
 Joplin caches the extracted plugin and keys it by size/timestamp. A rebuilt `.jpl` can keep the
@@ -67,8 +72,11 @@ same size, so the old code may keep running while the archive is new. Determinis
 
 ## Environment hygiene
 
-- The settings table holds `plugin-com.seigwen.dualtran.catalogCache` (~6 MB of models.dev JSON).
-  It dominates the database size and is where corruption surfaced once. Treat a corrupt
-  `database.sqlite` as a data-recovery task (see the `dualtran-joplin` Hermes skill), not a plugin
-  bug.
+- The models.dev catalogue cache lives in the plugin data directory
+  (`<profile>/plugin-data/com.seigwen.dualtran/catalog-cache.json`), not in `joplin.settings`.
+  It used to be a ~6 MB settings value, which dominated the database size and is where corruption
+  surfaced once. A legacy `catalogCache` setting is migrated to the file on first read and then
+  cleared (the SQLite file keeps the freed pages until a VACUUM).
+- Treat a corrupt `database.sqlite` as a data-recovery task (see the `dualtran-joplin` Hermes
+  skill), not a plugin bug.
 - Back up the profile before touching the database, and never edit it while Joplin is running.
