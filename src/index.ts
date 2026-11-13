@@ -357,7 +357,9 @@ async function handlePanelMessage(message: unknown): Promise<boolean> {
   const current = await readSettings();
 
   if (received.action === "close") {
-    if (panelHandle) await joplin.views.panels.show(panelHandle, false);
+    // `hide` is the documented call for this; `show(handle, false)` delegates to it. Keep the
+    // explicit method so the intent is obvious and the fake host can assert it.
+    if (panelHandle) await joplin.views.panels.hide(panelHandle);
     return true;
   }
 

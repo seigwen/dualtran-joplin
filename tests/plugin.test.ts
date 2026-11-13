@@ -26,6 +26,7 @@ interface FakeHost {
   commands: Map<string, () => Promise<unknown>>;
   handlers: Array<(message: unknown) => Promise<unknown>>;
   shown: number;
+  hidden: number;
   visible: boolean;
   onStart: (() => Promise<void>) | null;
 }
@@ -47,6 +48,7 @@ function boot(): FakeHost {
     commands: new Map(),
     handlers: [],
     shown: 0,
+    hidden: 0,
     visible: true,
     onStart: null,
   };
@@ -90,6 +92,10 @@ function boot(): FakeHost {
         show: async (_handle: string, show: boolean) => {
           host.shown += show ? 1 : 0;
           host.visible = show;
+        },
+        hide: async (_handle: string) => {
+          host.hidden += 1;
+          host.visible = false;
         },
       },
     },
@@ -186,6 +192,9 @@ describe.skipIf(skip)("built plugin", () => {
     await host.commands.get("dualtranOpenSettings")?.();
     expect(host.visible).toBe(true);
     expect(await host.handlers[0]({ action: "close" })).toBe(true);
+    // `hide` is the documented method; the fake host used to implement only `show`, so this
+    // test could not tell the two apart. Keep the explicit call and assert it.
+    expect(host.hidden).toBe(1);
     expect(host.visible).toBe(false);
   });
 

@@ -446,7 +446,6 @@ export function renderPanelHtml(model: PanelModel, status = ""): string {
   </div>
   <div id="status" role="status">${escapeHtml(status)}</div>
 </form>
-<script src="dualtran-panel.js"></script>
 </body>
 </html>`;
 }
