@@ -94,4 +94,8 @@
     setStatus("…");
     send("refresh");
   });
+
+  el("close").addEventListener("click", function () {
+    post({ action: "close" });
+  });
 })();

@@ -55,5 +55,6 @@
   "statusRefreshFailed": "カタログを更新できませんでした。キャッシュ済みのリストを使用します。",
   "statusRefreshed": "カタログを更新しました（{COUNT} プロバイダー）。",
   "statusRefreshing": "カタログを更新中…",
-  "statusSaved": "保存しました。"
+  "statusSaved": "保存しました。",
+  "closeButton": "設定を閉じる"
 }

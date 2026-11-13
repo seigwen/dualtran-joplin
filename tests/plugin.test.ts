@@ -26,6 +26,7 @@ interface FakeHost {
   commands: Map<string, () => Promise<unknown>>;
   handlers: Array<(message: unknown) => Promise<unknown>>;
   shown: number;
+  visible: boolean;
   onStart: (() => Promise<void>) | null;
 }
 
@@ -46,6 +47,7 @@ function boot(): FakeHost {
     commands: new Map(),
     handlers: [],
     shown: 0,
+    visible: true,
     onStart: null,
   };
 
@@ -85,8 +87,9 @@ function boot(): FakeHost {
         onMessage: async (_handle: string, handler: (message: unknown) => Promise<unknown>) => {
           host.handlers.push(handler);
         },
-        show: async () => {
-          host.shown += 1;
+        show: async (_handle: string, show: boolean) => {
+          host.shown += show ? 1 : 0;
+          host.visible = show;
         },
       },
     },
@@ -175,6 +178,15 @@ describe.skipIf(skip)("built plugin", () => {
     const html = host.html[host.html.length - 1] ?? "";
     expect(html).toMatch(/<option value="deepseek" selected>/);
     expect(html).toContain('value="https://api.deepseek.com"');
+  });
+
+  it("closes the panel when the close button posts close", async () => {
+    const host = boot();
+    await host.onStart?.();
+    await host.commands.get("dualtranOpenSettings")?.();
+    expect(host.visible).toBe(true);
+    expect(await host.handlers[0]({ action: "close" })).toBe(true);
+    expect(host.visible).toBe(false);
   });
 
   it("ignores a message that is not a panel command", async () => {

@@ -55,5 +55,6 @@
   "statusRefreshFailed": "No s'ha pogut actualitzar el catàleg; s'utilitza la llista desada a la memòria cau.",
   "statusRefreshed": "Catàleg actualitzat ({COUNT} proveïdors).",
   "statusRefreshing": "S'està actualitzant el catàleg…",
-  "statusSaved": "Desat."
+  "statusSaved": "Desat.",
+  "closeButton": "Tanca la configuració"
 }

@@ -20,7 +20,7 @@
   "htmlLang": "en",
   "labelApiKey": "Klíč API",
   "labelEndpoint": "Koncový bod",
-  "labelEngine": "Engine",
+  "labelEngine": "Stroj",
   "labelModel": "Model",
   "labelProvider": "Poskytovatel",
   "labelReasoning": "Míra uvažování",
@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Katalog se nepodařilo obnovit; použije se seznam z mezipaměti.",
   "statusRefreshed": "Katalog aktualizován (poskytovatelů: {COUNT}).",
   "statusRefreshing": "Katalog se obnovuje…",
-  "statusSaved": "Uloženo."
+  "statusSaved": "Uloženo.",
+  "closeButton": "Zavřít nastavení"
 }

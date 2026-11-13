@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Nu s-a putut reîmprospăta catalogul; se folosește lista din cache.",
   "statusRefreshed": "Catalog actualizat ({COUNT} furnizori).",
   "statusRefreshing": "Se reîmprospătează catalogul…",
-  "statusSaved": "Salvat."
+  "statusSaved": "Salvat.",
+  "closeButton": "Închide setările"
 }

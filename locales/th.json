@@ -55,5 +55,6 @@
   "statusRefreshFailed": "รีเฟรชแคตตาล็อกไม่สำเร็จ จะใช้รายการจากแคชแทน",
   "statusRefreshed": "อัปเดตแคตตาล็อกแล้ว ({COUNT} ผู้ให้บริการ).",
   "statusRefreshing": "กำลังรีเฟรชแคตตาล็อก…",
-  "statusSaved": "บันทึกแล้ว."
+  "statusSaved": "บันทึกแล้ว.",
+  "closeButton": "ปิดการตั้งค่า"
 }

@@ -55,5 +55,6 @@
   "statusRefreshFailed": "לא ניתן לרענן את הקטלוג; נעשה שימוש ברשימה השמורה במטמון.",
   "statusRefreshed": "הקטלוג עודכן ({COUNT} ספקים).",
   "statusRefreshing": "מרענן את הקטלוג…",
-  "statusSaved": "נשמר."
+  "statusSaved": "נשמר.",
+  "closeButton": "סגירת ההגדרות"
 }

@@ -9,7 +9,7 @@
   "providerRequiredForModel": "Elige primero un proveedor",
   "providerRequiredError": "Elige un proveedor de IA en los ajustes antes de traducir.",
   "engineAi": "IA (compatible con OpenAI)",
-  "engineGoogle": "Google Translate",
+  "engineGoogle": "Google Traductor",
   "hintApiKey": "Se guarda solo en este perfil de Joplin.",
   "hintEndpoint": "Se rellena a partir del proveedor. Escribe el tuyo para sobrescribirlo; se conserva al cambiar de proveedor.",
   "hintEngine": "Google no necesita clave; la IA usa cualquier endpoint compatible con OpenAI.",
@@ -19,7 +19,7 @@
   "hintTarget": "El idioma en el que se escriben las traducciones.",
   "htmlLang": "en",
   "labelApiKey": "Clave de API",
-  "labelEndpoint": "Endpoint",
+  "labelEndpoint": "Punto de conexión",
   "labelEngine": "Motor",
   "labelModel": "Modelo",
   "labelProvider": "Proveedor",
@@ -55,5 +55,6 @@
   "statusRefreshFailed": "No se pudo actualizar el catálogo; se usará la lista en caché.",
   "statusRefreshed": "Catálogo actualizado ({COUNT} proveedores).",
   "statusRefreshing": "Actualizando el catálogo…",
-  "statusSaved": "Guardado."
+  "statusSaved": "Guardado.",
+  "closeButton": "Cerrar configuración"
 }

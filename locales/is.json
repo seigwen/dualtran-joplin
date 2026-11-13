@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Tókst ekki að uppfæra skrána; listinn úr skyndiminni verður notaður.",
   "statusRefreshed": "Skrá uppfærð ({COUNT} þjónustuaðilar).",
   "statusRefreshing": "Uppfæri skrána…",
-  "statusSaved": "Vistað."
+  "statusSaved": "Vistað.",
+  "closeButton": "Loka stillingum"
 }

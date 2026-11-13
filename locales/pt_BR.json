@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Não foi possível atualizar o catálogo; usando a lista em cache.",
   "statusRefreshed": "Catálogo atualizado ({COUNT} provedores).",
   "statusRefreshing": "Atualizando o catálogo…",
-  "statusSaved": "Salvo."
+  "statusSaved": "Salvo.",
+  "closeButton": "Fechar configurações"
 }

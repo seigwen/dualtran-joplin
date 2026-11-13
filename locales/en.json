@@ -55,5 +55,6 @@
   "settingsModelLabel": "Model (advanced override)",
   "settingsModelDescription": "Advanced override for the settings panel: model id.",
   "settingsReasoningLabel": "Reasoning effort (advanced override)",
-  "settingsReasoningDescription": "Advanced override for the settings panel: lowest, none, minimal, low, medium, high."
+  "settingsReasoningDescription": "Advanced override for the settings panel: lowest, none, minimal, low, medium, high.",
+  "closeButton": "Close settings"
 }

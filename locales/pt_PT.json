@@ -19,7 +19,7 @@
   "hintTarget": "O idioma em que as traduções são escritas.",
   "htmlLang": "en",
   "labelApiKey": "Chave de API",
-  "labelEndpoint": "Endpoint",
+  "labelEndpoint": "Ponto final",
   "labelEngine": "Motor",
   "labelModel": "Modelo",
   "labelProvider": "Fornecedor",
@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Não foi possível atualizar o catálogo; está a ser usada a lista em cache.",
   "statusRefreshed": "Catálogo atualizado ({COUNT} fornecedores).",
   "statusRefreshing": "A atualizar o catálogo…",
-  "statusSaved": "Guardado."
+  "statusSaved": "Guardado.",
+  "closeButton": "Fechar definições"
 }

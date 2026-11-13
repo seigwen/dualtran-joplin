@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Kataloga ni bilo mogoče osvežiti; v uporabi je predpomnjeni seznam.",
   "statusRefreshed": "Katalog osvežen ({COUNT} ponudnikov).",
   "statusRefreshing": "Osveževanje kataloga …",
-  "statusSaved": "Shranjeno."
+  "statusSaved": "Shranjeno.",
+  "closeButton": "Zapri nastavitve"
 }

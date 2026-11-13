@@ -150,9 +150,10 @@ describe("model and reasoning changes", () => {
 });
 
 describe("panel messages", () => {
-  it("accepts save and refresh, rejects anything else", () => {
+  it("accepts save, refresh and close, rejects anything else", () => {
     expect(readPanelMessage({ action: "save" })?.action).toBe("save");
     expect(readPanelMessage({ action: "refresh" })?.action).toBe("refresh");
+    expect(readPanelMessage({ action: "close" })?.action).toBe("close");
     expect(readPanelMessage({ action: "delete" })).toBeNull();
     expect(readPanelMessage(null)).toBeNull();
     expect(readPanelMessage("save")).toBeNull();
@@ -193,9 +194,11 @@ describe("renderPanelHtml", () => {
     expect(html).toContain('<input id="apiKey" type="password"');
   });
 
-  it("offers Save and Refresh", () => {
+  it("offers Save, Refresh and a close control", () => {
     expect(html).toContain('id="save"');
     expect(html).toContain('id="refresh"');
+    expect(html).toContain('id="close"');
+    expect(html).toMatch(/aria-label="[^"]+"/);
   });
 
   it("marks the selected option and the current endpoint", () => {

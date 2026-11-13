@@ -19,7 +19,7 @@
   "hintTarget": "Język, w którym zapisywane są tłumaczenia.",
   "htmlLang": "en",
   "labelApiKey": "Klucz API",
-  "labelEndpoint": "Endpoint",
+  "labelEndpoint": "Punkt końcowy",
   "labelEngine": "Silnik",
   "labelModel": "Model",
   "labelProvider": "Dostawca",
@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Nie udało się odświeżyć katalogu; używana jest lista z pamięci podręcznej.",
   "statusRefreshed": "Katalog zaktualizowany ({COUNT} dostawców).",
   "statusRefreshing": "Odświeżanie katalogu…",
-  "statusSaved": "Zapisano."
+  "statusSaved": "Zapisano.",
+  "closeButton": "Zamknij ustawienia"
 }

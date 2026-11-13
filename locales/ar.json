@@ -55,5 +55,6 @@
   "statusRefreshFailed": "تعذّر تحديث الكتالوج؛ سيتم استخدام القائمة المخزنة مؤقتًا.",
   "statusRefreshed": "تم تحديث الكتالوج ({COUNT} من المزوّدين).",
   "statusRefreshing": "جارٍ تحديث الكتالوج…",
-  "statusSaved": "تم الحفظ."
+  "statusSaved": "تم الحفظ.",
+  "closeButton": "إغلاق الإعدادات"
 }

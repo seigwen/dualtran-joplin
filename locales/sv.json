@@ -55,5 +55,6 @@
   "statusRefreshFailed": "Det gick inte att uppdatera katalogen; använder den cachade listan.",
   "statusRefreshed": "Katalogen uppdaterad ({COUNT} leverantörer).",
   "statusRefreshing": "Uppdaterar katalogen…",
-  "statusSaved": "Sparat."
+  "statusSaved": "Sparat.",
+  "closeButton": "Stäng inställningar"
 }
