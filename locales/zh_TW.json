@@ -56,5 +56,6 @@
   "settingsModelDescription": "設定面板的進階覆寫項：模型識別碼。",
   "settingsReasoningLabel": "推理強度（進階覆寫）",
   "settingsReasoningDescription": "設定面板的進階覆寫項：lowest、none、minimal、low、medium、high。",
-  "closeButton": "關閉設定"
+  "closeButton": "關閉設定",
+  "progressTranslating": "正在翻譯…"
 }

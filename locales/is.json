@@ -56,5 +56,6 @@
   "statusRefreshed": "Skrá uppfærð ({COUNT} þjónustuaðilar).",
   "statusRefreshing": "Uppfæri skrána…",
   "statusSaved": "Vistað.",
-  "closeButton": "Loka stillingum"
+  "closeButton": "Loka stillingum",
+  "progressTranslating": "Translating…"
 }

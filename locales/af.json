@@ -56,5 +56,6 @@
   "statusRefreshed": "Katalogus opgedateer ({COUNT} verskaffers).",
   "statusRefreshing": "Die katalogus word verfris…",
   "statusSaved": "Gestoor.",
-  "closeButton": "Sluit instellings"
+  "closeButton": "Sluit instellings",
+  "progressTranslating": "Translating…"
 }

@@ -56,5 +56,6 @@
   "settingsModelDescription": "设置面板的高级覆盖项：模型标识。",
   "settingsReasoningLabel": "推理强度（高级覆盖）",
   "settingsReasoningDescription": "设置面板的高级覆盖项：lowest、none、minimal、low、medium、high。",
-  "closeButton": "关闭设置"
+  "closeButton": "关闭设置",
+  "progressTranslating": "正在翻译…"
 }

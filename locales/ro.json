@@ -56,5 +56,6 @@
   "statusRefreshed": "Catalog actualizat ({COUNT} furnizori).",
   "statusRefreshing": "Se reîmprospătează catalogul…",
   "statusSaved": "Salvat.",
-  "closeButton": "Închide setările"
+  "closeButton": "Închide setările",
+  "progressTranslating": "Translating…"
 }

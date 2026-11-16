@@ -56,5 +56,6 @@
   "statusRefreshed": "Katalog aktualizován (poskytovatelů: {COUNT}).",
   "statusRefreshing": "Katalog se obnovuje…",
   "statusSaved": "Uloženo.",
-  "closeButton": "Zavřít nastavení"
+  "closeButton": "Zavřít nastavení",
+  "progressTranslating": "Translating…"
 }

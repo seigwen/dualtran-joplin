@@ -56,5 +56,6 @@
   "statusRefreshed": "Katalógus frissítve ({COUNT} szolgáltató).",
   "statusRefreshing": "A katalógus frissítése…",
   "statusSaved": "Mentve.",
-  "closeButton": "Beállítások bezárása"
+  "closeButton": "Beállítások bezárása",
+  "progressTranslating": "Translating…"
 }

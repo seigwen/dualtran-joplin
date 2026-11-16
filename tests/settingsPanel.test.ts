@@ -14,6 +14,7 @@ import {
   mergeDraft,
   readPanelMessage,
   renderPanelHtml,
+  renderProgressHtml,
 } from "../src/settingsPanel";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -240,5 +241,20 @@ describe("renderPanelHtml", () => {
   it("carries the status text, escaped", () => {
     expect(renderPanelHtml(model(), "Saved.")).toContain(">Saved.<");
     expect(renderPanelHtml(model(), '<b>x</b>')).toContain("&lt;b&gt;x&lt;/b&gt;");
+  });
+});
+
+describe("renderProgressHtml", () => {
+  it("renders a spinner with the localized label and the engine detail", () => {
+    const html = renderProgressHtml(t, "Google Translate · Chinese (Simplified)");
+    expect(html).toContain("dualtran-spin");
+    expect(html).toContain("Translating…");
+    expect(html).toContain("Google Translate · Chinese (Simplified)");
+  });
+
+  it("escapes the detail instead of injecting markup", () => {
+    const html = renderProgressHtml(t, "<b>owned</b>");
+    expect(html).not.toContain("<b>owned</b>");
+    expect(html).toContain("&lt;b&gt;owned&lt;/b&gt;");
   });
 });

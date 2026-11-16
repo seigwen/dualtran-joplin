@@ -28,6 +28,7 @@ import {
   providerRequired,
   readPanelMessage,
   renderPanelHtml,
+  renderProgressHtml,
 } from "./settingsPanel";
 import type { PanelModel, PanelSettings } from "./settingsPanel";
 
@@ -310,8 +311,10 @@ async function translateCurrentNote(): Promise<void> {
   }
   const config = await readSettingsForRequest(t);
   if (!config) return;
+  if (translationInFlight) return;
+  translationInFlight = true;
   try {
-    const translated = await translateText(body, config);
+    const translated = await withProgress(progressDetail(config, t), () => translateText(body, config));
     const parentId = note.parent_id;
     const folder = await joplin.data.get(["folders", parentId], { fields: ["id", "title"] });
     await joplin.data.post(["notes"], null, {
@@ -323,6 +326,8 @@ async function translateCurrentNote(): Promise<void> {
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     await joplin.views.dialogs.showMessageBox(t("msgTranslateFailed", { ERROR: message }));
+  } finally {
+    translationInFlight = false;
   }
 }
 
@@ -346,14 +351,18 @@ async function translateSelection(): Promise<void> {
   }
   const config = await readSettingsForRequest(t);
   if (!config) return;
+  if (translationInFlight) return;
+  translationInFlight = true;
   try {
-    const translated = await translateText(selection.trim(), config);
+    const translated = await withProgress(progressDetail(config, t), () => translateText(selection.trim(), config));
     const body = `${note.body || ""}`.replace(selection, `${selection}\n\n${translated}`);
     await joplin.data.put(["notes", note.id], null, { body });
     await joplin.commands.execute("editor.setText", body);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     await joplin.views.dialogs.showMessageBox(t("msgTranslateFailed", { ERROR: message }));
+  } finally {
+    translationInFlight = false;
   }
 }
 
@@ -395,6 +404,58 @@ async function render(model: PanelModel, status = ""): Promise<void> {
   if (!panelHandle) return;
   panelModel = model;
   await joplin.views.panels.setHtml(panelHandle, renderPanelHtml(model, status));
+}
+
+// ── progress pane ──────────────────────────────────────────────────────────────────────────
+
+let progressHandle: string | null = null;
+let translationInFlight = false;
+
+function progressDetail(config: PanelSettings, t: Translator): string {
+  const engine = config.engine === "ai" ? t("engineAi") : t("engineGoogle");
+  const language = languageNames[config.target] ?? config.target;
+  return `${engine} · ${language}`;
+}
+
+async function showProgress(detail: string): Promise<void> {
+  try {
+    if (!progressHandle) progressHandle = await joplin.views.panels.create("dualtranProgress");
+    await joplin.views.panels.setHtml(progressHandle, renderProgressHtml(translatorFor(), detail));
+    await joplin.views.panels.show(progressHandle, true);
+  } catch {
+    // A missing progress pane must never block or fail the translation itself.
+  }
+}
+
+async function hideProgress(): Promise<void> {
+  if (!progressHandle) return;
+  try {
+    await joplin.views.panels.hide(progressHandle);
+  } catch {
+    // Already hidden / view destroyed — nothing to do.
+  }
+}
+
+/**
+ * Show the loading pane for the duration of `work`, but only after 500 ms: a fast Google call
+ * should not make a panel flash in and out. The pane is hidden in `finally`, including failures.
+ */
+async function withProgress<T>(detail: string, work: () => Promise<T>): Promise<T> {
+  let done = false;
+  let showing: Promise<void> | null = null;
+  const timer = setTimeout(() => {
+    if (!done) showing = showProgress(detail);
+  }, 500);
+  try {
+    return await work();
+  } finally {
+    done = true;
+    clearTimeout(timer);
+    if (showing) {
+      await showing;
+      await hideProgress();
+    }
+  }
 }
 
 async function openSettingsPanel(): Promise<void> {

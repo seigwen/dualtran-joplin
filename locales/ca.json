@@ -56,5 +56,6 @@
   "statusRefreshed": "Catàleg actualitzat ({COUNT} proveïdors).",
   "statusRefreshing": "S'està actualitzant el catàleg…",
   "statusSaved": "Desat.",
-  "closeButton": "Tanca la configuració"
+  "closeButton": "Tanca la configuració",
+  "progressTranslating": "Translating…"
 }

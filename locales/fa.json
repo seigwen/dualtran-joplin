@@ -56,5 +56,6 @@
   "statusRefreshed": "کاتالوگ به‌روزرسانی شد ({COUNT} ارائه‌دهنده).",
   "statusRefreshing": "در حال به‌روزرسانی کاتالوگ…",
   "statusSaved": "ذخیره شد.",
-  "closeButton": "بستن تنظیمات"
+  "closeButton": "بستن تنظیمات",
+  "progressTranslating": "Translating…"
 }

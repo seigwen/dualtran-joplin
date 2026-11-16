@@ -56,5 +56,6 @@
   "statusRefreshed": "הקטלוג עודכן ({COUNT} ספקים).",
   "statusRefreshing": "מרענן את הקטלוג…",
   "statusSaved": "נשמר.",
-  "closeButton": "סגירת ההגדרות"
+  "closeButton": "סגירת ההגדרות",
+  "progressTranslating": "Translating…"
 }

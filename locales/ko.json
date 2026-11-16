@@ -56,5 +56,6 @@
   "statusRefreshed": "카탈로그가 업데이트되었습니다(공급자 {COUNT}개).",
   "statusRefreshing": "카탈로그를 새로 고치는 중…",
   "statusSaved": "저장되었습니다.",
-  "closeButton": "설정 닫기"
+  "closeButton": "설정 닫기",
+  "progressTranslating": "Translating…"
 }

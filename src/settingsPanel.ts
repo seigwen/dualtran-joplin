@@ -455,3 +455,33 @@ export function renderPanelHtml(model: PanelModel, status = ""): string {
 </body>
 </html>`;
 }
+
+/**
+ * Loading pane shown while a translation request is in flight.
+ *
+ * Joplin has no plugin progress/status-bar API, and toasts cannot be dismissed programmatically,
+ * so a panel is the only surface that can stay visible for the whole request and disappear again
+ * when it finishes. Keep it self-contained: no scripts, only CSS, so `setHtml` can render it
+ * without the webview-lifecycle dance the settings panel needs.
+ */
+export function renderProgressHtml(t: Translator, detail: string): string {
+  return `<!DOCTYPE html>
+<html lang="${escapeHtml(t("htmlLang"))}">
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { height: 100%; }
+  body { margin: 0; box-sizing: border-box; padding: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; font-family: sans-serif; font-size: 13px; color: #666; }
+  .spinner { width: 28px; height: 28px; border: 3px solid rgba(128, 128, 128, 0.25); border-top-color: #4a90d9; border-radius: 50%; animation: dualtran-spin 0.9s linear infinite; }
+  p { margin: 0; }
+  .detail { font-size: 11px; color: #888; }
+  @keyframes dualtran-spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+  <div class="spinner" role="status" aria-live="polite"></div>
+  <p>${escapeHtml(t("progressTranslating"))}</p>
+  <p class="detail">${escapeHtml(detail)}</p>
+</body>
+</html>`;
+}
