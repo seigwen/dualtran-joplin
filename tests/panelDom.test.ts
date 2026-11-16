@@ -111,6 +111,14 @@ describe.skipIf(skip)("panel script in a real DOM", () => {
     expect(posts).toEqual([{ action: "close" }, { action: "close" }]);
   });
 
+  it("saves when the engine picker changes", () => {
+    const { dom, posts } = makePanel({ scriptFirst: false });
+    const engine = dom.window.document.getElementById("engine") as HTMLSelectElement;
+    engine.value = "ai";
+    engine.dispatchEvent(new dom.window.Event("change", { bubbles: true }));
+    expect(posts).toEqual([{ action: "save", draft: expect.objectContaining({ engine: "ai" }) }]);
+  });
+
   it("does not double-post when the script is evaluated twice", () => {
     const { posts, click } = makePanel({ scriptFirst: false, evaluateTwice: true });
     click("close");

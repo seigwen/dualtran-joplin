@@ -54,6 +54,7 @@ export interface PanelModel {
 }
 
 export interface PanelDraft {
+  engine?: string;
   language?: string;
   provider?: string;
   model?: string;
@@ -283,8 +284,13 @@ export function mergeDraft(current: Partial<PanelSettings>, draft: PanelDraft | 
     modelRaw === CUSTOM_MODEL ? text(draft.customModel, "") || (current.model || "") : modelRaw;
   const provider = text(draft.provider, "");
   const currentProvider = (current.provider ?? "").trim();
+  // The engine picker must persist like every other control. Before this, `mergeDraft` always
+  // returned the current engine, so switching Google ↔ AI in the panel saved nothing and both
+  // "engines" produced Google's translation.
+  const draftEngine = text(draft.engine, "");
+  const engine = draftEngine === "ai" || draftEngine === "google" ? draftEngine : current.engine || "google";
   return {
-    engine: current.engine || "google",
+    engine,
     target: text(draft.language, current.target || "zh-CN"),
     provider: provider === "" ? currentProvider : provider,
     model,

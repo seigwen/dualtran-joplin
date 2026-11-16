@@ -209,6 +209,14 @@ describe.skipIf(skip)("built plugin", () => {
     expect(host.visible).toBe(false);
   });
 
+  it("saves an engine switch from the panel", async () => {
+    const host = boot();
+    await host.onStart?.();
+    await host.commands.get("dualtranOpenSettings")?.();
+    expect(await host.handlers[0]({ action: "save", draft: { engine: "google" } })).toBe(true);
+    expect(host.settings.engine).toBe("google");
+  });
+
   it("ignores a message that is not a panel command", async () => {
     const host = boot();
     await host.onStart?.();

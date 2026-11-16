@@ -61,9 +61,13 @@
       post({ action: action, draft: draft() });
     }
 
-    // Provider, model and endpoint changes are decisions only the plugin can make (which model to
-    // preselect, whether the endpoint is still autofilled), so they go back to it as a save of the
-    // current draft; the plugin re-renders with the corrected state.
+    // Provider, model and endpoint changes are decisions only the plugin can make (which model
+    // to preselect, whether the endpoint is still autofilled), so they go back to it as a save
+    // of the current draft; the plugin re-renders with the corrected state.
+    el("engine").addEventListener("change", function () {
+      send("save");
+    });
+
     el("provider").addEventListener("change", function () {
       send("save");
     });

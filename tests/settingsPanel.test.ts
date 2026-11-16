@@ -175,6 +175,12 @@ describe("panel messages", () => {
     expect(mergeDraft(settings, { endpoint: "https://proxy/v1", endpointCustom: false }).endpointCustom).toBe(false);
   });
 
+  it("persists the engine picker and rejects unknown values", () => {
+    expect(mergeDraft({ ...settings, engine: "google" }, { engine: "ai" }).engine).toBe("ai");
+    expect(mergeDraft(settings, { engine: "google" }).engine).toBe("google");
+    expect(mergeDraft({ ...settings, engine: "ai" }, { engine: "bing" }).engine).toBe("ai");
+  });
+
   it("ignores unknown draft keys and non-string values", () => {
     const merged = mergeDraft(settings, { target: 42, evil: "x" } as never);
     expect(merged.target).toBe("zh-CN");
