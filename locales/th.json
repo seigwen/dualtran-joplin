@@ -56,5 +56,6 @@
   "statusRefreshed": "อัปเดตแคตตาล็อกแล้ว ({COUNT} ผู้ให้บริการ).",
   "statusRefreshing": "กำลังรีเฟรชแคตตาล็อก…",
   "statusSaved": "บันทึกแล้ว.",
-  "closeButton": "ปิดการตั้งค่า"
+  "closeButton": "ปิดการตั้งค่า",
+  "progressTranslating": "Translating…"
 }

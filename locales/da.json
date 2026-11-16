@@ -56,5 +56,6 @@
   "statusRefreshed": "Katalog opdateret ({COUNT} udbydere).",
   "statusRefreshing": "Opdaterer kataloget…",
   "statusSaved": "Gemt.",
-  "closeButton": "Luk indstillinger"
+  "closeButton": "Luk indstillinger",
+  "progressTranslating": "Translating…"
 }

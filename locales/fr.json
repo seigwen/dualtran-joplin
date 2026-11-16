@@ -56,5 +56,6 @@
   "statusRefreshed": "Catalogue mis à jour ({COUNT} fournisseurs).",
   "statusRefreshing": "Actualisation du catalogue…",
   "statusSaved": "Enregistré.",
-  "closeButton": "Fermer les paramètres"
+  "closeButton": "Fermer les paramètres",
+  "progressTranslating": "Translating…"
 }

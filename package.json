@@ -17,10 +17,11 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "conformance": "node scripts/conformance/run.mjs",
+    "e2e:panel": "node scripts/e2e/panel-smoke.mjs",
     "i18n": "node scripts/i18n-translate.mjs",
     "pack:publish": "node scripts/pack-publish.js",
     "release": "npm run build && npm run pack:publish",
-    "verify": "npm run typecheck && npm test && npm run conformance && npm run build"
+    "verify": "npm run build && npm run typecheck && npm test && npm run conformance"
   },
   "keywords": [
     "joplin-plugin",
@@ -31,9 +32,11 @@
     "joplin-plugin-api": "^0.1.0"
   },
   "devDependencies": {
+    "@types/jsdom": "^30.0.0",
     "@types/node": "^26.6.5",
     "esbuild": "^0.28.2",
     "joplin-plugin-cli": "0.1.2",
+    "jsdom": "^31.0.1",
     "typescript": "^7.0.2",
     "vitest": "^5.0.5"
   },

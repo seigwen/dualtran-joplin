@@ -56,5 +56,6 @@
   "statusRefreshed": "Katalog osvežen ({COUNT} ponudnikov).",
   "statusRefreshing": "Osveževanje kataloga …",
   "statusSaved": "Shranjeno.",
-  "closeButton": "Zapri nastavitve"
+  "closeButton": "Zapri nastavitve",
+  "progressTranslating": "Translating…"
 }

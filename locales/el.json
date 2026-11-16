@@ -56,5 +56,6 @@
   "statusRefreshed": "Ο κατάλογος ενημερώθηκε ({COUNT} πάροχοι).",
   "statusRefreshing": "Γίνεται ανανέωση του καταλόγου…",
   "statusSaved": "Αποθηκεύτηκε.",
-  "closeButton": "Κλείσιμο ρυθμίσεων"
+  "closeButton": "Κλείσιμο ρυθμίσεων",
+  "progressTranslating": "Translating…"
 }

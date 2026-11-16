@@ -56,5 +56,6 @@
   "statusRefreshed": "Katalog aktualisiert ({COUNT} Anbieter).",
   "statusRefreshing": "Katalog wird aktualisiert…",
   "statusSaved": "Gespeichert.",
-  "closeButton": "Einstellungen schließen"
+  "closeButton": "Einstellungen schließen",
+  "progressTranslating": "Translating…"
 }

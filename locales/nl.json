@@ -56,5 +56,6 @@
   "statusRefreshed": "Catalogus bijgewerkt ({COUNT} providers).",
   "statusRefreshing": "Catalogus wordt vernieuwd…",
   "statusSaved": "Opgeslagen.",
-  "closeButton": "Instellingen sluiten"
+  "closeButton": "Instellingen sluiten",
+  "progressTranslating": "Translating…"
 }

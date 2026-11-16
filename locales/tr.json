@@ -56,5 +56,6 @@
   "statusRefreshed": "Katalog güncellendi ({COUNT} sağlayıcı).",
   "statusRefreshing": "Katalog yenileniyor…",
   "statusSaved": "Kaydedildi.",
-  "closeButton": "Ayarları kapat"
+  "closeButton": "Ayarları kapat",
+  "progressTranslating": "Translating…"
 }

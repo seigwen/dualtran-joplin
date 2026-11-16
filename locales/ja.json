@@ -56,5 +56,6 @@
   "statusRefreshed": "カタログを更新しました（{COUNT} プロバイダー）。",
   "statusRefreshing": "カタログを更新中…",
   "statusSaved": "保存しました。",
-  "closeButton": "設定を閉じる"
+  "closeButton": "設定を閉じる",
+  "progressTranslating": "Translating…"
 }

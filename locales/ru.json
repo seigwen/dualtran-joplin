@@ -56,5 +56,6 @@
   "statusRefreshed": "Каталог обновлён ({COUNT} провайдеров).",
   "statusRefreshing": "Обновление каталога…",
   "statusSaved": "Сохранено.",
-  "closeButton": "Закрыть настройки"
+  "closeButton": "Закрыть настройки",
+  "progressTranslating": "Translating…"
 }

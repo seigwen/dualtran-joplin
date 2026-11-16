@@ -56,5 +56,6 @@
   "statusRefreshed": "Luettelo päivitetty ({COUNT} tarjoajaa).",
   "statusRefreshing": "Päivitetään luetteloa…",
   "statusSaved": "Tallennettu.",
-  "closeButton": "Sulje asetukset"
+  "closeButton": "Sulje asetukset",
+  "progressTranslating": "Translating…"
 }

@@ -14,6 +14,7 @@ import {
   mergeDraft,
   readPanelMessage,
   renderPanelHtml,
+  renderProgressHtml,
 } from "../src/settingsPanel";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -175,6 +176,12 @@ describe("panel messages", () => {
     expect(mergeDraft(settings, { endpoint: "https://proxy/v1", endpointCustom: false }).endpointCustom).toBe(false);
   });
 
+  it("persists the engine picker and rejects unknown values", () => {
+    expect(mergeDraft({ ...settings, engine: "google" }, { engine: "ai" }).engine).toBe("ai");
+    expect(mergeDraft(settings, { engine: "google" }).engine).toBe("google");
+    expect(mergeDraft({ ...settings, engine: "ai" }, { engine: "bing" }).engine).toBe("ai");
+  });
+
   it("ignores unknown draft keys and non-string values", () => {
     const merged = mergeDraft(settings, { target: 42, evil: "x" } as never);
     expect(merged.target).toBe("zh-CN");
@@ -234,5 +241,20 @@ describe("renderPanelHtml", () => {
   it("carries the status text, escaped", () => {
     expect(renderPanelHtml(model(), "Saved.")).toContain(">Saved.<");
     expect(renderPanelHtml(model(), '<b>x</b>')).toContain("&lt;b&gt;x&lt;/b&gt;");
+  });
+});
+
+describe("renderProgressHtml", () => {
+  it("renders a spinner with the localized label and the engine detail", () => {
+    const html = renderProgressHtml(t, "Google Translate · Chinese (Simplified)");
+    expect(html).toContain("dualtran-spin");
+    expect(html).toContain("Translating…");
+    expect(html).toContain("Google Translate · Chinese (Simplified)");
+  });
+
+  it("escapes the detail instead of injecting markup", () => {
+    const html = renderProgressHtml(t, "<b>owned</b>");
+    expect(html).not.toContain("<b>owned</b>");
+    expect(html).toContain("&lt;b&gt;owned&lt;/b&gt;");
   });
 });

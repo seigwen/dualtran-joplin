@@ -56,5 +56,6 @@
   "statusRefreshed": "Katalogen uppdaterad ({COUNT} leverantörer).",
   "statusRefreshing": "Uppdaterar katalogen…",
   "statusSaved": "Sparat.",
-  "closeButton": "Stäng inställningar"
+  "closeButton": "Stäng inställningar",
+  "progressTranslating": "Translating…"
 }

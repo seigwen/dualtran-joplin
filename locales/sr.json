@@ -56,5 +56,6 @@
   "statusRefreshed": "Katalog je ažuriran ({COUNT} dobavljača).",
   "statusRefreshing": "Osvežavanje kataloga…",
   "statusSaved": "Sačuvano.",
-  "closeButton": "Zatvori podešavanja"
+  "closeButton": "Zatvori podešavanja",
+  "progressTranslating": "Translating…"
 }

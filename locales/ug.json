@@ -56,5 +56,6 @@
   "statusRefreshed": "كاتالوگ يېڭىلاندى ({COUNT} تەمىنلىگۈچى).",
   "statusRefreshing": "كاتالوگ يېڭىلىنىۋاتىدۇ…",
   "statusSaved": "ساقلاندى.",
-  "closeButton": "تەڭشەكلەرنى تاقاڭ"
+  "closeButton": "تەڭشەكلەرنى تاقاڭ",
+  "progressTranslating": "Translating…"
 }

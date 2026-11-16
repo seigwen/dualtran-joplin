@@ -28,6 +28,7 @@ import {
   providerRequired,
   readPanelMessage,
   renderPanelHtml,
+  renderProgressHtml,
 } from "./settingsPanel";
 import type { PanelModel, PanelSettings } from "./settingsPanel";
 
@@ -108,12 +109,76 @@ function useCachedCatalog(cache: CatalogCache | null, status: CatalogState["stat
 }
 
 /**
- * Load models.dev. A 24h cache lives in `joplin.settings.catalogCache`; when a refresh fails the
- * stale cache is used, and with no cache at all the built-ins keep the panel usable offline.
+ * Load models.dev. The 24h cache lives in the plugin data directory (`catalog-cache.json`) — not
+ * in `joplin.settings`. The catalogue is several megabytes of JSON; keeping it in the settings
+ * table made the database ~6.8 MB and its B-tree the place where corruption surfaced. A legacy
+ * `catalogCache` setting is migrated to the file on first read and then cleared.
  */
+const CATALOG_CACHE_FILE = "catalog-cache.json";
+
+function nodeFs(): { fs: typeof import("node:fs"); path: typeof import("node:path") } | null {
+  try {
+    const fs = require("node:fs") as typeof import("node:fs");
+    const path = require("node:path") as typeof import("node:path");
+    return { fs, path };
+  } catch {
+    return null;
+  }
+}
+
+async function catalogCacheDir(): Promise<string | null> {
+  try {
+    return await joplin.plugins.dataDir();
+  } catch {
+    return null;
+  }
+}
+
+async function readCatalogCacheText(): Promise<string | null> {
+  const node = nodeFs();
+  const dir = await catalogCacheDir();
+  if (node && dir) {
+    try {
+      const file = node.path.join(dir, CATALOG_CACHE_FILE);
+      if (node.fs.existsSync(file)) return node.fs.readFileSync(file, "utf8");
+    } catch {
+      // Fall through to the legacy setting.
+    }
+  }
+
+  try {
+    const values = (await joplin.settings.values(["catalogCache"])) as Record<string, unknown>;
+    const legacy = typeof values.catalogCache === "string" && values.catalogCache.trim() ? values.catalogCache : null;
+    if (legacy) {
+      await writeCatalogCacheText(legacy);
+      await joplin.settings.setValue("catalogCache", "");
+    }
+    return legacy;
+  } catch {
+    return null;
+  }
+}
+
+async function writeCatalogCacheText(json: string): Promise<void> {
+  const node = nodeFs();
+  const dir = await catalogCacheDir();
+  if (node && dir) {
+    try {
+      node.fs.writeFileSync(node.path.join(dir, CATALOG_CACHE_FILE), json, "utf8");
+      return;
+    } catch {
+      // Fall through to the settings fallback (a cache is better than nothing).
+    }
+  }
+  try {
+    await joplin.settings.setValue("catalogCache", json);
+  } catch {
+    // Cache writes are best-effort; the next fetch will retry.
+  }
+}
+
 async function loadCatalog(options: { force?: boolean } = {}): Promise<CatalogState> {
-  const values = (await joplin.settings.values(["catalogCache"])) as Record<string, unknown>;
-  const cache = parseCatalogCache(typeof values.catalogCache === "string" ? values.catalogCache : null);
+  const cache = parseCatalogCache(await readCatalogCacheText());
 
   if (!options.force && isCatalogCacheFresh(cache, Date.now()) && useCachedCatalog(cache, "fresh")) {
     return catalogState;
@@ -124,7 +189,7 @@ async function loadCatalog(options: { force?: boolean } = {}): Promise<CatalogSt
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const raw = await response.json();
     const next: CatalogCache = { fetchedAt: Date.now(), raw };
-    await joplin.settings.setValue("catalogCache", JSON.stringify(next));
+    await writeCatalogCacheText(JSON.stringify(next));
     catalogState = { catalog: projectCatalog(raw), fetchedAt: next.fetchedAt, status: "fresh" };
   } catch {
     if (!useCachedCatalog(cache, "stale")) {
@@ -246,8 +311,10 @@ async function translateCurrentNote(): Promise<void> {
   }
   const config = await readSettingsForRequest(t);
   if (!config) return;
+  if (translationInFlight) return;
+  translationInFlight = true;
   try {
-    const translated = await translateText(body, config);
+    const translated = await withProgress(progressDetail(config, t), () => translateText(body, config));
     const parentId = note.parent_id;
     const folder = await joplin.data.get(["folders", parentId], { fields: ["id", "title"] });
     await joplin.data.post(["notes"], null, {
@@ -259,6 +326,8 @@ async function translateCurrentNote(): Promise<void> {
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     await joplin.views.dialogs.showMessageBox(t("msgTranslateFailed", { ERROR: message }));
+  } finally {
+    translationInFlight = false;
   }
 }
 
@@ -282,14 +351,18 @@ async function translateSelection(): Promise<void> {
   }
   const config = await readSettingsForRequest(t);
   if (!config) return;
+  if (translationInFlight) return;
+  translationInFlight = true;
   try {
-    const translated = await translateText(selection.trim(), config);
+    const translated = await withProgress(progressDetail(config, t), () => translateText(selection.trim(), config));
     const body = `${note.body || ""}`.replace(selection, `${selection}\n\n${translated}`);
     await joplin.data.put(["notes", note.id], null, { body });
     await joplin.commands.execute("editor.setText", body);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     await joplin.views.dialogs.showMessageBox(t("msgTranslateFailed", { ERROR: message }));
+  } finally {
+    translationInFlight = false;
   }
 }
 
@@ -333,6 +406,58 @@ async function render(model: PanelModel, status = ""): Promise<void> {
   await joplin.views.panels.setHtml(panelHandle, renderPanelHtml(model, status));
 }
 
+// ── progress pane ──────────────────────────────────────────────────────────────────────────
+
+let progressHandle: string | null = null;
+let translationInFlight = false;
+
+function progressDetail(config: PanelSettings, t: Translator): string {
+  const engine = config.engine === "ai" ? t("engineAi") : t("engineGoogle");
+  const language = languageNames[config.target] ?? config.target;
+  return `${engine} · ${language}`;
+}
+
+async function showProgress(detail: string): Promise<void> {
+  try {
+    if (!progressHandle) progressHandle = await joplin.views.panels.create("dualtranProgress");
+    await joplin.views.panels.setHtml(progressHandle, renderProgressHtml(translatorFor(), detail));
+    await joplin.views.panels.show(progressHandle, true);
+  } catch {
+    // A missing progress pane must never block or fail the translation itself.
+  }
+}
+
+async function hideProgress(): Promise<void> {
+  if (!progressHandle) return;
+  try {
+    await joplin.views.panels.hide(progressHandle);
+  } catch {
+    // Already hidden / view destroyed — nothing to do.
+  }
+}
+
+/**
+ * Show the loading pane for the duration of `work`, but only after 500 ms: a fast Google call
+ * should not make a panel flash in and out. The pane is hidden in `finally`, including failures.
+ */
+async function withProgress<T>(detail: string, work: () => Promise<T>): Promise<T> {
+  let done = false;
+  let showing: Promise<void> | null = null;
+  const timer = setTimeout(() => {
+    if (!done) showing = showProgress(detail);
+  }, 500);
+  try {
+    return await work();
+  } finally {
+    done = true;
+    clearTimeout(timer);
+    if (showing) {
+      await showing;
+      await hideProgress();
+    }
+  }
+}
+
 async function openSettingsPanel(): Promise<void> {
   panelLocale = detectLocale();
   const t = translatorFor(panelLocale);
@@ -357,7 +482,9 @@ async function handlePanelMessage(message: unknown): Promise<boolean> {
   const current = await readSettings();
 
   if (received.action === "close") {
-    if (panelHandle) await joplin.views.panels.show(panelHandle, false);
+    // `hide` is the documented call for this; `show(handle, false)` delegates to it. Keep the
+    // explicit method so the intent is obvious and the fake host can assert it.
+    if (panelHandle) await joplin.views.panels.hide(panelHandle);
     return true;
   }
 
@@ -477,8 +604,9 @@ joplin.plugins.register({
         type: 2,
         section: SECTION,
         public: false,
-        label: "Catalogue cache (advanced)",
-        description: "Internal: the models.dev catalogue, cached for 24 hours. Clear it to force a refresh.",
+        label: "Catalogue cache (legacy)",
+        description:
+          "Internal: legacy cache location. The models.dev catalogue now lives in the plugin data directory; this value is migrated and cleared on first start.",
       },
     });
 

@@ -56,5 +56,6 @@
   "statusRefreshed": "Katalogs atjaunināts ({COUNT} pakalpojumu sniedzēji).",
   "statusRefreshing": "Notiek kataloga atjaunināšana…",
   "statusSaved": "Saglabāts.",
-  "closeButton": "Aizvērt iestatījumus"
+  "closeButton": "Aizvērt iestatījumus",
+  "progressTranslating": "Translating…"
 }

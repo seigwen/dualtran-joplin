@@ -56,5 +56,6 @@
   "statusRefreshed": "कैटलॉग अपडेट हो गया ({COUNT} प्रदाता)।",
   "statusRefreshing": "कैटलॉग रिफ़्रेश हो रहा है…",
   "statusSaved": "सहेज लिया गया।",
-  "closeButton": "सेटिंग्स बंद करें"
+  "closeButton": "सेटिंग्स बंद करें",
+  "progressTranslating": "Translating…"
 }
